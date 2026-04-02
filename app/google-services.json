@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1041336713814",
+    "project_id": "skinsmart-d9f0d",
+    "storage_bucket": "skinsmart-d9f0d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1041336713814:android:fff830fa0d085a84f371f7",
+        "android_client_info": {
+          "package_name": "com.example.skinsmart"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXS3Iu4g4BEn1NIAAN9sIa72M6a-Eh_MM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
