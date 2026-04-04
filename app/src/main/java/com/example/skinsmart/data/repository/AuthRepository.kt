@@ -44,7 +44,7 @@ class AuthRepository {
         return try {
             val authResult = auth.createUserWithEmailAndPassword(email, password).await()
             val userId = authResult.user!!.uid
-            
+
             val newUser = User(
                 id = userId,
                 name = name,
@@ -52,10 +52,10 @@ class AuthRepository {
                 skinType = skinType,
                 avatarUrl = "" // Default empty avatar
             )
-            
+
             // Save the user data to Firestore
             firestore.collection("users").document(userId).set(newUser).await()
-            
+
             Result.success(newUser)
         } catch (e: Exception) {
             Result.failure(e)
@@ -74,7 +74,7 @@ class AuthRepository {
      */
     private suspend fun fetchUserFromFirestore(userId: String): User {
         val documentSnapshot = firestore.collection("users").document(userId).get().await()
-        return documentSnapshot.toObject(User::class.java) 
+        return documentSnapshot.toObject(User::class.java)
             ?: throw Exception("User document not found in Firestore")
     }
 }
