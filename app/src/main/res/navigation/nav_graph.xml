@@ -31,4 +31,22 @@
         android:label="Smart Shelf"
         tools:layout="@layout/fragment_smart_shelf" />
         
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.skinsmart.ui.fragments.SearchFragment"
+        android:label="Discover"
+        tools:layout="@layout/fragment_search" />
+        
+    <fragment
+        android:id="@+id/createReviewFragment"
+        android:name="com.example.skinsmart.ui.fragments.CreateReviewFragment"
+        android:label="Write Review"
+        tools:layout="@layout/fragment_create_review" />
+        
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.skinsmart.ui.fragments.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
+        
 </navigation>
