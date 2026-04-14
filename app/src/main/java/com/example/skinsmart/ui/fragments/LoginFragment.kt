@@ -30,6 +30,10 @@ class LoginFragment : Fragment() {
             // For now map it directly to Home
             findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
         }
+        
+        binding.tvSignUp.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+        }
     }
 
     override fun onDestroyView() {
