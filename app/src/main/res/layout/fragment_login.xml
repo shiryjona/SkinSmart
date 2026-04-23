@@ -36,5 +36,15 @@
         android:layout_height="wrap_content"
         android:text="Login" />
 
+    <TextView
+        android:id="@+id/tvSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Don't have an account? Sign Up"
+        android:textColor="#0d9488"
+        android:textStyle="bold"
+        android:layout_marginTop="24dp"
+        android:padding="8dp"/>
+
 </LinearLayout>
 

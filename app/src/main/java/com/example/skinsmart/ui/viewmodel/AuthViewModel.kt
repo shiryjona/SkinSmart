@@ -21,6 +21,28 @@ class AuthViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+    init {
+        loadCurrentUser()
+    }
+
+    /**
+     * Fetch user data if Firebase already holds a persistent auth session.
+     */
+    private fun loadCurrentUser() {
+        if (repository.isUserLoggedIn()) {
+            _isLoading.value = true
+            viewModelScope.launch {
+                val result = repository.getCurrentUser()
+                if (result.isSuccess) {
+                    _currentUser.value = result.getOrNull()
+                } else {
+                    _error.value = result.exceptionOrNull()?.message ?: "Failed to sync profile data"
+                }
+                _isLoading.value = false
+            }
+        }
+    }
+
     /**
      * Attempts to register a new user using Firebase
      */
@@ -31,7 +53,9 @@ class AuthViewModel : ViewModel() {
             if (result.isSuccess) {
                 _currentUser.value = result.getOrNull()
             } else {
-                _error.value = result.exceptionOrNull()?.message ?: "Unknown registration error"
+                val exception = result.exceptionOrNull()
+                android.util.Log.e("AuthViewModel", "Registration failed", exception)
+                _error.value = exception?.message ?: "Unknown registration error"
             }
             _isLoading.value = false
         }

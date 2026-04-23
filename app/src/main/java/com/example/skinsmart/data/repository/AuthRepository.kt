@@ -70,6 +70,19 @@ class AuthRepository {
     }
 
     /**
+     * Retrieves the current user data from Firestore using the persistent Auth token.
+     */
+    suspend fun getCurrentUser(): Result<User> {
+        val userId = getCurrentUserId() ?: return Result.failure(Exception("Not logged in"))
+        return try {
+            val userRecord = fetchUserFromFirestore(userId)
+            Result.success(userRecord)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    /**
      * Utility method to fetch user data cleanly from Firestore.
      */
     private suspend fun fetchUserFromFirestore(userId: String): User {
