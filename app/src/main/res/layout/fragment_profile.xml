@@ -40,4 +40,13 @@
         android:backgroundTint="#ffffff"
         android:textColor="#4b5563"/>
 
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Log Out"
+        android:backgroundTint="#ef4444"
+        android:textColor="#ffffff"
+        android:layout_marginTop="12dp"/>
+
 </LinearLayout>
