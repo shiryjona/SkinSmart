@@ -3,6 +3,7 @@ package com.example.skinsmart.data.repository
 import com.example.skinsmart.model.SocialPost
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.coroutines.tasks.await
 
 class FeedRepository {
@@ -23,6 +24,27 @@ class FeedRepository {
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+    /**
+     * Listens to the latest 50 posts from the global feed in real-time
+     */
+    fun listenToFeed(
+        onUpdate: (List<SocialPost>) -> Unit,
+        onError: (Exception) -> Unit
+    ): ListenerRegistration {
+        return postsCollection
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .limit(50)
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    onError(e)
+                    return@addSnapshotListener
+                }
+                
+                val posts = snapshot?.toObjects(SocialPost::class.java) ?: emptyList()
+                onUpdate(posts)
+            }
     }
 
     /**

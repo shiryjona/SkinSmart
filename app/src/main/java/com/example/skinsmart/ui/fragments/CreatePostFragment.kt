@@ -40,6 +40,9 @@ class CreatePostFragment : Fragment() {
             findNavController().navigateUp()
         }
 
+        // Reset state so we don't immediately trigger success logic from a previous post
+        feedViewModel.resetPostState()
+
         binding.btnSubmitReview.setOnClickListener {
             val productName = binding.etProductName.text.toString().trim()
             val text = binding.etReviewText.text.toString().trim()
