@@ -12,7 +12,7 @@
         android:title="Discover" />
         
     <item
-        android:id="@+id/createReviewFragment"
+        android:id="@+id/createPostFragment"
         android:icon="@android:drawable/ic_menu_add"
         android:title="Post" />
 

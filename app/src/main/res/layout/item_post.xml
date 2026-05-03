@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="@android:color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- HEADER -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivAuthorAvatar"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_margin="12dp"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+            android:src="@android:drawable/ic_menu_camera"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvAuthorName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"
+            tools:text="Dana Cohen"
+            android:textSize="14sp"
+            android:textColor="#1f2937"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/ivAuthorAvatar"
+            app:layout_constraintTop_toTopOf="@id/ivAuthorAvatar"
+            app:layout_constraintEnd_toStartOf="@id/tvTime" />
+
+        <TextView
+            android:id="@+id/tvAuthorSkinType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Oily Skin"
+            android:textSize="10sp"
+            android:textColor="#c2410c"
+            android:backgroundTint="#ffedd5"
+            android:background="@drawable/bg_pill_orange"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="2dp"
+            android:layout_marginTop="2dp"
+            app:layout_constraintStart_toStartOf="@id/tvAuthorName"
+            app:layout_constraintTop_toBottomOf="@id/tvAuthorName" />
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            tools:text="2h"
+            android:textSize="12sp"
+            android:textColor="#9ca3af"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ivAuthorAvatar"
+            app:layout_constraintBottom_toBottomOf="@id/ivAuthorAvatar" />
+
+        <!-- IMAGE (Optional visually) -->
+        <ImageView
+            android:id="@+id/ivPostImage"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_marginTop="12dp"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            android:background="#f3f4f6"
+            app:layout_constraintTop_toBottomOf="@id/ivAuthorAvatar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- FOOTER -->
+        <TextView
+            android:id="@+id/tvProductName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="12dp"
+            tools:text="CeraVe Foaming Cleanser"
+            android:textSize="14sp"
+            android:textColor="#111827"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivPostImage" />
+
+        <RatingBar
+            android:id="@+id/rbRating"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            android:numStars="5"
+            android:stepSize="1.0"
+            tools:rating="4.0"
+            android:progressTint="#facc15"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvProductName" />
+
+        <TextView
+            android:id="@+id/tvReviewText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="16dp"
+            tools:text="Best cleanser for oily skin! Cleared my acne in 2 weeks."
+            android:textSize="12sp"
+            android:textColor="#4b5563"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rbRating"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

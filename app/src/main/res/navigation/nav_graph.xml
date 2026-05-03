@@ -38,6 +38,9 @@
         <action
             android:id="@+id/action_homeFragment_to_smartShelfFragment"
             app:destination="@id/smartShelfFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_createPostFragment"
+            app:destination="@id/createPostFragment" />
     </fragment>
 
     <fragment
@@ -53,10 +56,10 @@
         tools:layout="@layout/fragment_search" />
         
     <fragment
-        android:id="@+id/createReviewFragment"
-        android:name="com.example.skinsmart.ui.fragments.CreateReviewFragment"
+        android:id="@+id/createPostFragment"
+        android:name="com.example.skinsmart.ui.fragments.CreatePostFragment"
         android:label="Write Review"
-        tools:layout="@layout/fragment_create_review" />
+        tools:layout="@layout/fragment_create_post" />
         
     <fragment
         android:id="@+id/profileFragment"

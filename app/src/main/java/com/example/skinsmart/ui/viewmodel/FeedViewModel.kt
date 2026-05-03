@@ -4,36 +4,61 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.skinsmart.data.network.MakeupProduct
-import com.example.skinsmart.data.repository.ProductRepository
+import com.example.skinsmart.data.repository.FeedRepository
+import com.example.skinsmart.model.SocialPost
 import kotlinx.coroutines.launch
 
 class FeedViewModel : ViewModel() {
 
-    private val repository = ProductRepository()
+    private val repository = FeedRepository()
 
-    private val _searchResults = MutableLiveData<List<MakeupProduct>>()
-    val searchResults: LiveData<List<MakeupProduct>> = _searchResults
+    private val _posts = MutableLiveData<List<SocialPost>>()
+    val posts: LiveData<List<SocialPost>> = _posts
 
-    private val _isSearching = MutableLiveData<Boolean>()
-    val isSearching: LiveData<Boolean> = _isSearching
-    
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
 
+    private val _postPublished = MutableLiveData<Boolean>()
+    val postPublished: LiveData<Boolean> = _postPublished
+
+    init {
+        fetchFeed()
+    }
+
     /**
-     * Executes a search query via Retrofit on the external API.
+     * Fetches the global social feed.
      */
-    fun searchMakeupProducts(type: String? = null, brand: String? = null) {
-        _isSearching.value = true
+    fun fetchFeed() {
+        _isLoading.value = true
         viewModelScope.launch {
-            val result = repository.searchProducts(type, brand)
+            val result = repository.getGlobalFeed()
             if (result.isSuccess) {
-                _searchResults.value = result.getOrNull() ?: emptyList()
+                _posts.value = result.getOrNull() ?: emptyList()
             } else {
-                _error.value = result.exceptionOrNull()?.message ?: "Search failed"
+                _error.value = result.exceptionOrNull()?.message ?: "Failed to fetch feed"
             }
-            _isSearching.value = false
+            _isLoading.value = false
+        }
+    }
+
+    /**
+     * Publishes a new review to the global feed.
+     */
+    fun publishPost(post: SocialPost) {
+        _isLoading.value = true
+        _postPublished.value = false
+        viewModelScope.launch {
+            val result = repository.publishPost(post)
+            if (result.isSuccess) {
+                _postPublished.value = true
+                fetchFeed() // Refresh feed
+            } else {
+                _error.value = result.exceptionOrNull()?.message ?: "Failed to publish post"
+            }
+            _isLoading.value = false
         }
     }
 }
