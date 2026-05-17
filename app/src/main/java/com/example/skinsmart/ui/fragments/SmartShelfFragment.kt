@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,6 +38,24 @@ class SmartShelfFragment : Fragment() {
             shelfItems = emptyList(),
             onDeleteClicked = { product ->
                 shelfViewModel.removeProductFromShelf(product)
+            },
+            onEditNoteClicked = { product ->
+                // Show a dialog with an EditText so the user can write/edit their private note
+                val input = EditText(requireContext()).apply {
+                    setText(product.privateNote)
+                    hint = "Write your private note here..."
+                    setPadding(32, 16, 32, 16)
+                }
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Edit Private Note")
+                    .setMessage("\"${product.name}\"")
+                    .setView(input)
+                    .setPositiveButton("Save") { _, _ ->
+                        val newNote = input.text.toString().trim()
+                        shelfViewModel.updatePrivateNote(product, newNote)
+                    }
+                    .setNegativeButton("Cancel", null)
+                    .show()
             }
         )
         binding.rvShelf.layoutManager = LinearLayoutManager(requireContext())
