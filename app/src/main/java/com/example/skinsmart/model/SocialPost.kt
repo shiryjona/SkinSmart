@@ -11,5 +11,6 @@ data class SocialPost(
     val productName: String = "",
     val reviewText: String = "",
     val rating: Int = 0,
+    val imageUrl: String = "",
     val timestamp: Long = System.currentTimeMillis()
 )

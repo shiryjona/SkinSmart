@@ -18,7 +18,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,7 +46,28 @@
                 android:backgroundTint="#f3f4f6"
                 android:padding="16dp"
                 android:textSize="14sp"
-                android:layout_marginBottom="24dp"/>
+                android:layout_marginBottom="16dp"/>
+
+            <!-- IMAGE: button + preview together -->
+            <Button
+                android:id="@+id/btnPickImage"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="Add Photo (optional)"
+                android:backgroundTint="#f3f4f6"
+                android:textColor="#374151"
+                android:textSize="14sp"
+                app:cornerRadius="12dp"
+                android:layout_marginBottom="8dp"/>
+
+            <ImageView
+                android:id="@+id/ivPostPreview"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                android:background="#f3f4f6"
+                android:layout_marginBottom="16dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -63,7 +86,7 @@
                 android:stepSize="1.0"
                 android:rating="5.0"
                 android:progressTint="#facc15"
-                android:layout_marginBottom="24dp"/>
+                android:layout_marginBottom="16dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -77,19 +100,19 @@
             <EditText
                 android:id="@+id/etReviewText"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="100dp"
                 android:gravity="top|start"
-                android:hint="Write your review here... How did it feel? Did it help your skin type?"
+                android:hint="Write your review here..."
                 android:background="@drawable/bg_pill_orange"
                 android:backgroundTint="#f3f4f6"
                 android:padding="16dp"
                 android:textSize="14sp"
-                android:layout_marginBottom="24dp"/>
+                android:layout_marginBottom="20dp"/>
 
             <Button
                 android:id="@+id/btnSubmitReview"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="56dp"
                 android:text="Post Review"
                 android:backgroundTint="#0d9488"
                 app:cornerRadius="12dp"
@@ -102,7 +125,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:visibility="gone"
-                android:layout_marginTop="16dp"/>
+                android:layout_marginTop="12dp"/>
 
         </LinearLayout>
     </ScrollView>
