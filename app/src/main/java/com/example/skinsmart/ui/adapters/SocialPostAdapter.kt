@@ -9,8 +9,20 @@ import com.example.skinsmart.model.SocialPost
 import com.squareup.picasso.Picasso
 import java.util.concurrent.TimeUnit
 
+/**
+ * Adapter for displaying social feed posts.
+ *
+ * @param posts         Initial list of posts.
+ * @param currentUserId Firebase UID of the logged-in user. When provided, posts belonging
+ *                      to this user will show Edit and Delete buttons.
+ * @param onEditClicked Callback invoked when the user clicks Edit on their own post.
+ * @param onDeleteClicked Callback invoked when the user clicks Delete on their own post.
+ */
 class SocialPostAdapter(
-    private var posts: List<SocialPost>
+    private var posts: List<SocialPost>,
+    private val currentUserId: String? = null,
+    private val onEditClicked: ((SocialPost) -> Unit)? = null,
+    private val onDeleteClicked: ((SocialPost) -> Unit)? = null
 ) : RecyclerView.Adapter<SocialPostAdapter.PostViewHolder>() {
 
     fun submitList(newPosts: List<SocialPost>) {
@@ -29,7 +41,8 @@ class SocialPostAdapter(
 
     override fun getItemCount(): Int = posts.size
 
-    inner class PostViewHolder(private val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class PostViewHolder(private val binding: ItemPostBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(post: SocialPost) {
             binding.tvAuthorName.text = post.authorName
@@ -38,25 +51,31 @@ class SocialPostAdapter(
             binding.tvReviewText.text = post.reviewText
             binding.rbRating.rating = post.rating.toFloat()
 
-            // Calculate simple time ago
+            // Time-ago label
             val diffMs = System.currentTimeMillis() - post.timestamp
             val hours = TimeUnit.MILLISECONDS.toHours(diffMs)
-            if (hours < 24) {
-                binding.tvTime.text = "${hours}h ago"
-            } else {
-                binding.tvTime.text = "${TimeUnit.MILLISECONDS.toDays(diffMs)}d ago"
+            binding.tvTime.text = when {
+                hours < 1   -> "just now"
+                hours < 24  -> "${hours}h ago"
+                else        -> "${TimeUnit.MILLISECONDS.toDays(diffMs)}d ago"
             }
 
-            // Load post image using Picasso if URL is available
+            // Load post image if available
             if (post.imageUrl.isNotEmpty()) {
                 binding.ivPostImage.visibility = View.VISIBLE
-                Picasso.get()
-                    .load(post.imageUrl)
-                    .fit()
-                    .centerCrop()
-                    .into(binding.ivPostImage)
+                Picasso.get().load(post.imageUrl).fit().centerCrop().into(binding.ivPostImage)
             } else {
                 binding.ivPostImage.visibility = View.GONE
+            }
+
+            // Show Edit/Delete only for the current user's own posts
+            val isOwnPost = currentUserId != null && post.userId == currentUserId
+            if (isOwnPost && onEditClicked != null && onDeleteClicked != null) {
+                binding.layoutEditDelete.visibility = View.VISIBLE
+                binding.btnEditPost.setOnClickListener { onEditClicked.invoke(post) }
+                binding.btnDeletePost.setOnClickListener { onDeleteClicked.invoke(post) }
+            } else {
+                binding.layoutEditDelete.visibility = View.GONE
             }
         }
     }

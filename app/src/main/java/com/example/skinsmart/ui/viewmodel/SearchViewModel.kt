@@ -17,17 +17,18 @@ class SearchViewModel : ViewModel() {
 
     private val _isSearching = MutableLiveData<Boolean>()
     val isSearching: LiveData<Boolean> = _isSearching
-    
+
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
 
     /**
-     * Executes a search query via Retrofit on the external API.
+     * Fetches beauty/skincare products matching the given keyword.
+     * Call with null or empty to load default "skincare" results.
      */
-    fun searchMakeupProducts(type: String? = null, brand: String? = null) {
+    fun searchProducts(query: String? = null) {
         _isSearching.value = true
         viewModelScope.launch {
-            val result = repository.searchProducts(type, brand)
+            val result = repository.searchProducts(query)
             if (result.isSuccess) {
                 _searchResults.value = result.getOrNull() ?: emptyList()
             } else {

@@ -3,32 +3,69 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#f9fafb"
-    android:padding="16dp">
+    android:background="#f9fafb">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Find Products"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="#374151"
-        android:layout_marginBottom="12dp"/>
-
-    <EditText
-        android:id="@+id/etSearchBox"
+    <!-- Header -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@android:drawable/editbox_background"
-        android:hint="Search cosmetics via Makeup API..."
-        android:inputType="text"
-        android:paddingStart="12dp"
-        android:layout_marginBottom="16dp"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@android:color/white">
 
-    <!-- Placeholder for actual RecyclerView -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Find Products"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#111827"
+            android:layout_marginBottom="12dp"/>
+
+        <SearchView
+            android:id="@+id/etSearchBox"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:queryHint="Search by brand (e.g. maybelline)..."
+            android:iconifiedByDefault="false"
+            android:background="@drawable/bg_pill_orange"
+            android:backgroundTint="#f3f4f6"/>
+
+    </LinearLayout>
+
+    <!-- Spinner — centered with a FrameLayout wrapper -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+
+    </FrameLayout>
+
+    <!-- Empty state -->
+    <TextView
+        android:id="@+id/tvEmptyState"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="48dp"
+        android:text="No products found"
+        android:textSize="16sp"
+        android:textColor="#9ca3af"
+        android:visibility="gone"/>
+
+    <!-- Results list — weight=1 ensures it fills remaining space properly -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSearchResults"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp"
+        android:clipToPadding="false"/>
 
 </LinearLayout>

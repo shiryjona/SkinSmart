@@ -3,21 +3,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    android:padding="24dp">
+    android:background="#f9fafb">
 
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@android:color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Smart Shelf ✨"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#111827"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your private local product collection"
+            android:textSize="13sp"
+            android:textColor="#6b7280"
+            android:layout_marginTop="4dp"/>
+    </LinearLayout>
+
+    <!-- Empty state -->
     <TextView
+        android:id="@+id/tvEmptyShelf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="My Private Smart Shelf"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp"/>
+        android:layout_gravity="center"
+        android:layout_marginTop="64dp"
+        android:text="Your shelf is empty.\nSave products from Discover!"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:textColor="#9ca3af"
+        android:visibility="gone"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Your locally saved cosmetic products will appear here."
-        android:textAlignment="center"/>
+    <!-- Products list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvShelf"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        android:clipToPadding="false"/>
 
 </LinearLayout>
