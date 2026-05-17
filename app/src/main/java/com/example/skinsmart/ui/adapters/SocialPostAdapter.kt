@@ -47,8 +47,17 @@ class SocialPostAdapter(
                 binding.tvTime.text = "${TimeUnit.MILLISECONDS.toDays(diffMs)}d ago"
             }
 
-            // Optional Image (will implement URL loading later in MVP stage 2)
-            binding.ivPostImage.visibility = View.GONE
+            // Load post image using Picasso if URL is available
+            if (post.imageUrl.isNotEmpty()) {
+                binding.ivPostImage.visibility = View.VISIBLE
+                Picasso.get()
+                    .load(post.imageUrl)
+                    .fit()
+                    .centerCrop()
+                    .into(binding.ivPostImage)
+            } else {
+                binding.ivPostImage.visibility = View.GONE
+            }
         }
     }
 }

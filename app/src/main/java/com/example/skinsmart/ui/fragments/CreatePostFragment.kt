@@ -1,10 +1,12 @@
 package com.example.skinsmart.ui.fragments
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -21,6 +23,20 @@ class CreatePostFragment : Fragment() {
     private lateinit var authViewModel: AuthViewModel
     private lateinit var feedViewModel: FeedViewModel
 
+    // Holds the URI of the image the user picked from gallery
+    private var selectedImageUri: Uri? = null
+
+    // Launches the system image picker and handles the result
+    private val imagePickerLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            if (uri != null) {
+                selectedImageUri = uri
+                binding.ivPostPreview.setImageURI(uri)
+                binding.ivPostPreview.visibility = View.VISIBLE
+                binding.btnPickImage.text = "Change Photo"
+            }
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,7 +48,6 @@ class CreatePostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Use Activity scope so we share data with the entire app
         authViewModel = ViewModelProvider(requireActivity()).get(AuthViewModel::class.java)
         feedViewModel = ViewModelProvider(requireActivity()).get(FeedViewModel::class.java)
 
@@ -42,6 +57,11 @@ class CreatePostFragment : Fragment() {
 
         // Reset state so we don't immediately trigger success logic from a previous post
         feedViewModel.resetPostState()
+
+        // Open gallery when user taps "Add Photo"
+        binding.btnPickImage.setOnClickListener {
+            imagePickerLauncher.launch("image/*")
+        }
 
         binding.btnSubmitReview.setOnClickListener {
             val productName = binding.etProductName.text.toString().trim()
@@ -63,7 +83,8 @@ class CreatePostFragment : Fragment() {
                     reviewText = text,
                     rating = rating
                 )
-                feedViewModel.publishPost(newPost)
+                // Pass the selected image URI (null = no image, text-only post)
+                feedViewModel.publishPost(newPost, selectedImageUri)
             } else {
                 Toast.makeText(requireContext(), "Must be logged in to post", Toast.LENGTH_SHORT).show()
             }
@@ -78,6 +99,12 @@ class CreatePostFragment : Fragment() {
             if (success == true) {
                 Toast.makeText(requireContext(), "Post published!", Toast.LENGTH_SHORT).show()
                 findNavController().navigateUp()
+            }
+        }
+
+        feedViewModel.error.observe(viewLifecycleOwner) { errorMsg ->
+            if (errorMsg.isNotEmpty()) {
+                Toast.makeText(requireContext(), errorMsg, Toast.LENGTH_LONG).show()
             }
         }
     }
