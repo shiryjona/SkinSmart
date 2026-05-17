@@ -3,17 +3,33 @@ package com.example.skinsmart.data.network
 import com.google.gson.annotations.SerializedName
 
 /**
- * Data model matching the response structure of the Makeup API.
- * The @SerializedName annotation maps the JSON keys to Kotlin properties.
+ * Wrapper for the Open Beauty Facts search API response.
+ * Endpoint: GET /cgi/search.pl?search_terms=...&action=process&json=1
+ */
+data class OpenBeautyResponse(
+    val products: List<MakeupProduct> = emptyList(),
+    val count: Int = 0
+)
+
+/**
+ * Represents a single beauty/skincare product from Open Beauty Facts.
+ * Field names mapped from the JSON response via @SerializedName.
  */
 data class MakeupProduct(
-    val id: Int,
-    val brand: String? = "",
+    val code: String = "",
+    @SerializedName("product_name")
     val name: String = "",
-    val price: String? = "0.0",
-    @SerializedName("image_link") 
+    val brands: String? = "",
+    @SerializedName("image_front_url")
     val imageUrl: String? = "",
-    val description: String? = "",
-    @SerializedName("product_type") 
-    val productType: String? = ""
-)
+    val categories: String? = ""
+) {
+    /** Convenience alias so existing code using product.id still works */
+    val id: String get() = code
+
+    /** Convenience alias so existing code using product.brand still works */
+    val brand: String? get() = brands
+
+    /** Price is not provided by Open Beauty Facts */
+    val price: String? get() = null
+}

@@ -95,6 +95,66 @@ class FeedViewModel : ViewModel() {
         }
     }
 
+    private val _userPosts = MutableLiveData<List<SocialPost>>()
+    val userPosts: LiveData<List<SocialPost>> = _userPosts
+
+    private val _actionSuccess = MutableLiveData<String?>()
+    val actionSuccess: LiveData<String?> = _actionSuccess
+
+    /**
+     * Loads all posts belonging to the current user.
+     */
+    fun loadUserPosts(userId: String) {
+        _isLoading.value = true
+        viewModelScope.launch {
+            val result = feedRepository.getUserPosts(userId)
+            if (result.isSuccess) {
+                _userPosts.value = result.getOrNull() ?: emptyList()
+            } else {
+                _error.value = result.exceptionOrNull()?.message ?: "Failed to load posts"
+            }
+            _isLoading.value = false
+        }
+    }
+
+    /**
+     * Deletes the user's post from Firestore.
+     */
+    fun deletePost(postId: String, userId: String) {
+        viewModelScope.launch {
+            feedRepository.deletePost(postId)
+            loadUserPosts(userId) // Refresh the list after deletion
+            _actionSuccess.value = "Post deleted"
+        }
+    }
+
+    /**
+     * Updates an existing post (text + rating + optional new image).
+     */
+    fun updatePost(post: SocialPost, newImageUri: android.net.Uri? = null) {
+        _isLoading.value = true
+        viewModelScope.launch {
+            try {
+                val finalPost = if (newImageUri != null) {
+                    val uploadResult = storageRepository.uploadPostImage(newImageUri, post.userId)
+                    if (uploadResult.isFailure) {
+                        _error.value = uploadResult.exceptionOrNull()?.message ?: "Image upload failed"
+                        _isLoading.value = false
+                        return@launch
+                    }
+                    post.copy(imageUrl = uploadResult.getOrNull() ?: post.imageUrl)
+                } else post
+                feedRepository.updatePost(finalPost)
+                _actionSuccess.value = "Post updated"
+                loadUserPosts(post.userId)
+            } catch (e: Exception) {
+                _error.value = e.message ?: "Update failed"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
     override fun onCleared() {
         super.onCleared()
         feedListener?.remove()

@@ -1,5 +1,7 @@
 package com.example.skinsmart.model
 
+import java.io.Serializable
+
 /**
  * Data class representing an entry in the global SkinSmart social feed.
  */
@@ -13,4 +15,5 @@ data class SocialPost(
     val rating: Int = 0,
     val imageUrl: String = "",
     val timestamp: Long = System.currentTimeMillis()
-)
+) : Serializable
+

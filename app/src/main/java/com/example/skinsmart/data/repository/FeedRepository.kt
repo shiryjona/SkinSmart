@@ -48,6 +48,48 @@ class FeedRepository {
     }
 
     /**
+     * Returns all posts published by a specific user, sorted by timestamp descending.
+     * NOTE: We sort client-side to avoid requiring a composite Firestore index.
+     */
+    suspend fun getUserPosts(userId: String): Result<List<SocialPost>> {
+        return try {
+            val snapshot = postsCollection
+                .whereEqualTo("userId", userId)
+                .get()
+                .await()
+            val posts = snapshot.toObjects(SocialPost::class.java)
+                .sortedByDescending { it.timestamp }
+            Result.success(posts)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * Updates an existing post's text, rating, and optionally its image URL.
+     */
+    suspend fun updatePost(post: SocialPost): Result<Boolean> {
+        return try {
+            postsCollection.document(post.postId).set(post).await()
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * Deletes a post by its ID from Firestore.
+     */
+    suspend fun deletePost(postId: String): Result<Boolean> {
+        return try {
+            postsCollection.document(postId).delete().await()
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    /**
      * Retrieves the latest 50 posts from the global feed
      */
     suspend fun getGlobalFeed(): Result<List<SocialPost>> {

@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
  * Singleton Retrofit Client to prevent memory leaks and handle API instantiation.
  */
 object RetrofitClient {
-    private const val BASE_URL = "http://makeup-api.herokuapp.com/"
+    private const val BASE_URL = "https://world.openbeautyfacts.org/"
 
     val makeupApi: MakeupApi by lazy {
         val retrofit = Retrofit.Builder()

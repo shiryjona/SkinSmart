@@ -28,7 +28,14 @@ class ProductAdapter(
         fun bind(product: MakeupProduct) {
             productName.text = product.name
             productBrand.text = product.brand ?: "Unknown Brand"
-            productPrice.text = "$${product.price ?: "0.00"}"
+
+            // Open Beauty Facts doesn't provide price — hide the field instead of showing $0.00
+            if (product.price != null) {
+                productPrice.visibility = View.VISIBLE
+                productPrice.text = "$${product.price}"
+            } else {
+                productPrice.visibility = View.GONE
+            }
             
             if (!product.imageUrl.isNullOrEmpty()) {
                 Picasso.get().load(product.imageUrl).into(productImage)
