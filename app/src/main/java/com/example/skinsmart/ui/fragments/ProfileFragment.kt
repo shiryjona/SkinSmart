@@ -1,10 +1,13 @@
 package com.example.skinsmart.ui.fragments
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +18,7 @@ import com.example.skinsmart.databinding.FragmentProfileBinding
 import com.example.skinsmart.ui.adapters.SocialPostAdapter
 import com.example.skinsmart.ui.viewmodel.AuthViewModel
 import com.example.skinsmart.ui.viewmodel.FeedViewModel
+import com.squareup.picasso.Picasso
 
 class ProfileFragment : Fragment() {
 
@@ -24,6 +28,23 @@ class ProfileFragment : Fragment() {
     private lateinit var authViewModel: AuthViewModel
     private lateinit var feedViewModel: FeedViewModel
     private lateinit var postsAdapter: SocialPostAdapter
+
+    private var profileBitmap: Bitmap? = null
+
+    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        uri?.let {
+            // Convert Uri to Bitmap
+            val bitmap = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                val source = android.graphics.ImageDecoder.createSource(requireContext().contentResolver, it)
+                android.graphics.ImageDecoder.decodeBitmap(source)
+            } else {
+                @Suppress("DEPRECATION")
+                android.provider.MediaStore.Images.Media.getBitmap(requireContext().contentResolver, it)
+            }
+            profileBitmap = bitmap
+            binding.ivProfileImage.setImageBitmap(bitmap)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,10 +62,24 @@ class ProfileFragment : Fragment() {
 
         binding.rvMyPosts.layoutManager = LinearLayoutManager(requireContext())
 
+        // Setup Skin Type Spinner
+        val skinTypes = arrayOf("Oily", "Dry", "Combination", "Normal", "Sensitive")
+        val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, skinTypes)
+        binding.spinnerSkinType.adapter = spinnerAdapter
+
         authViewModel.currentUser.observe(viewLifecycleOwner) { user ->
             if (user != null) {
                 binding.tvUserName.text = user.name.ifEmpty { "Guest User" }
                 binding.tvUserSkinType.text = "Skin Type: ${user.skinType}"
+
+                // Load Profile Image
+                if (profileBitmap == null && user.avatarUrl.isNotEmpty()) {
+                    Picasso.get()
+                        .load(user.avatarUrl)
+                        .placeholder(R.drawable.ic_launcher_foreground) // Use a proper resource
+                        .error(R.drawable.ic_launcher_foreground)
+                        .into(binding.ivProfileImage)
+                }
 
                 // Build adapter with the user's ID so Edit/Delete show for all posts in this list
                 postsAdapter = SocialPostAdapter(
@@ -93,7 +128,74 @@ class ProfileFragment : Fragment() {
         }
 
         binding.btnEditProfile.setOnClickListener {
-            Toast.makeText(requireContext(), "Edit profile coming soon!", Toast.LENGTH_SHORT).show()
+            toggleEditMode(true)
+        }
+
+        binding.btnCancelEdit.setOnClickListener {
+            toggleEditMode(false)
+            profileBitmap = null
+            // Reset image from user data
+            val user = authViewModel.currentUser.value
+            if (user != null && user.avatarUrl.isNotEmpty()) {
+                Picasso.get().load(user.avatarUrl).into(binding.ivProfileImage)
+            } else {
+                binding.ivProfileImage.setImageResource(R.drawable.ic_launcher_foreground)
+            }
+        }
+
+        binding.layoutProfileImage.setOnClickListener {
+            if (binding.layoutEditMode.visibility == View.VISIBLE) {
+                pickImageLauncher.launch("image/*")
+            }
+        }
+
+        binding.btnSaveProfile.setOnClickListener {
+            val name = binding.etEditName.text.toString().trim()
+            val skinType = binding.spinnerSkinType.selectedItem.toString()
+
+            if (name.isEmpty()) {
+                binding.etEditName.error = "Name cannot be empty"
+                return@setOnClickListener
+            }
+
+            authViewModel.updateUserProfile(name, skinType, profileBitmap)
+            toggleEditMode(false)
+            profileBitmap = null
+        }
+
+        authViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            // You could add a progress bar here if needed
+            binding.btnSaveProfile.isEnabled = !isLoading
+        }
+
+        authViewModel.error.observe(viewLifecycleOwner) { errorMsg ->
+            if (!errorMsg.isNullOrEmpty()) {
+                Toast.makeText(requireContext(), errorMsg, Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private fun toggleEditMode(isEditing: Boolean) {
+        binding.layoutViewMode.visibility = if (isEditing) View.GONE else View.VISIBLE
+        binding.layoutEditMode.visibility = if (isEditing) View.VISIBLE else View.GONE
+
+        binding.btnEditProfile.visibility = if (isEditing) View.GONE else View.VISIBLE
+        binding.btnLogout.visibility = if (isEditing) View.GONE else View.VISIBLE
+
+        binding.btnSaveProfile.visibility = if (isEditing) View.VISIBLE else View.GONE
+        binding.btnCancelEdit.visibility = if (isEditing) View.VISIBLE else View.GONE
+        
+        binding.viewImageOverlay.visibility = if (isEditing) View.VISIBLE else View.GONE
+        binding.ivEditIcon.visibility = if (isEditing) View.VISIBLE else View.GONE
+
+        if (isEditing) {
+            val user = authViewModel.currentUser.value
+            binding.etEditName.setText(user?.name)
+
+            // Set spinner selection
+            val skinTypes = arrayOf("Oily", "Dry", "Combination", "Normal", "Sensitive")
+            val index = skinTypes.indexOf(user?.skinType).coerceAtLeast(0)
+            binding.spinnerSkinType.setSelection(index)
         }
     }
 
