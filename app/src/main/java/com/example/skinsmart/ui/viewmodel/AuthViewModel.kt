@@ -1,5 +1,6 @@
 package com.example.skinsmart.ui.viewmodel
 
+import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -80,5 +81,22 @@ class AuthViewModel : ViewModel() {
     fun logout() {
         repository.logout()
         _currentUser.value = null
+    }
+
+    /**
+     * Updates the user profile and pushes changes to Firestore.
+     */
+    fun updateUserProfile(name: String, skinType: String, imageBitmap: Bitmap?) {
+        val userId = _currentUser.value?.id ?: return
+        _isLoading.value = true
+        viewModelScope.launch {
+            val result = repository.updateUserProfile(userId, name, skinType, imageBitmap)
+            if (result.isSuccess) {
+                _currentUser.value = result.getOrNull()
+            } else {
+                _error.value = result.exceptionOrNull()?.message ?: "Failed to update profile"
+            }
+            _isLoading.value = false
+        }
     }
 }
