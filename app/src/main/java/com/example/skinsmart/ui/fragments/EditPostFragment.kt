@@ -47,9 +47,7 @@ class EditPostFragment : Fragment() {
 
         feedViewModel = ViewModelProvider(requireActivity()).get(FeedViewModel::class.java)
 
-        // Receive the post data via Bundle (Serializable)
-        @Suppress("DEPRECATION")
-        currentPost = requireArguments().getSerializable("post") as SocialPost
+        currentPost = EditPostFragmentArgs.fromBundle(requireArguments()).post
 
         // Pre-fill fields with existing post data
         binding.etEditProductName.setText(currentPost.productName)

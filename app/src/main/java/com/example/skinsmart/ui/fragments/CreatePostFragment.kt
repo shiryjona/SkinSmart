@@ -55,6 +55,11 @@ class CreatePostFragment : Fragment() {
             findNavController().navigateUp()
         }
 
+        val args = CreatePostFragmentArgs.fromBundle(requireArguments())
+        if (args.productName.isNotEmpty()) {
+            binding.etProductName.setText(args.productName)
+        }
+
         // Reset state so we don't immediately trigger success logic from a previous post
         feedViewModel.resetPostState()
 
