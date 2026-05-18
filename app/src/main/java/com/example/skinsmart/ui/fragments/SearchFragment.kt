@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.skinsmart.R
 import com.example.skinsmart.data.local.ShelfProduct
 import com.example.skinsmart.data.network.MakeupProduct
 import com.example.skinsmart.databinding.FragmentSearchBinding
@@ -44,7 +43,7 @@ class SearchFragment : Fragment() {
         // Setup RecyclerView
         adapter = ProductAdapter(
             products = emptyList(),
-            onReviewClicked = { navigateToCreatePost() },
+            onReviewClicked = { product -> navigateToCreatePost(product.name) },
             onSaveClicked = { product -> saveProductToShelf(product) }
         )
         binding.rvSearchResults.layoutManager = LinearLayoutManager(requireContext())
@@ -94,8 +93,10 @@ class SearchFragment : Fragment() {
         Toast.makeText(requireContext(), "\"${product.name}\" saved to shelf!", Toast.LENGTH_SHORT).show()
     }
 
-    private fun navigateToCreatePost() {
-        findNavController().navigate(R.id.action_searchFragment_to_createPostFragment)
+    private fun navigateToCreatePost(productName: String) {
+        val action = SearchFragmentDirections.actionSearchFragmentToCreatePostFragment()
+            .setProductName(productName)
+        findNavController().navigate(action)
     }
 
     override fun onDestroyView() {

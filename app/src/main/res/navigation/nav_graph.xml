@@ -67,7 +67,12 @@
         android:id="@+id/createPostFragment"
         android:name="com.example.skinsmart.ui.fragments.CreatePostFragment"
         android:label="Write Review"
-        tools:layout="@layout/fragment_create_post" />
+        tools:layout="@layout/fragment_create_post">
+        <argument
+            android:name="productName"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
         
     <fragment
         android:id="@+id/profileFragment"
@@ -86,7 +91,7 @@
         tools:layout="@layout/fragment_edit_post">
         <argument
             android:name="post"
-            app:argType="java.io.Serializable" />
+            app:argType="com.example.skinsmart.model.SocialPost" />
     </fragment>
 
 </navigation>
