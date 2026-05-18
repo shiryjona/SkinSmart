@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.skinsmart.R
 import com.example.skinsmart.databinding.FragmentHomeBinding
 import com.example.skinsmart.ui.adapters.SocialPostAdapter
 import com.example.skinsmart.ui.viewmodel.AuthViewModel
@@ -49,8 +48,8 @@ class HomeFragment : Fragment() {
                 posts = feedViewModel.posts.value ?: emptyList(),
                 currentUserId = currentUserId,
                 onEditClicked = { post ->
-                    val bundle = android.os.Bundle().apply { putSerializable("post", post) }
-                    findNavController().navigate(R.id.action_homeFragment_to_editPostFragment, bundle)
+                    val action = HomeFragmentDirections.actionHomeFragmentToEditPostFragment(post)
+                    findNavController().navigate(action)
                 },
                 onDeleteClicked = { post ->
                     AlertDialog.Builder(requireContext())

@@ -51,8 +51,8 @@ class ProfileFragment : Fragment() {
                     posts = emptyList(),
                     currentUserId = user.id,   // ← all posts here belong to this user
                     onEditClicked = { post ->
-                        val bundle = android.os.Bundle().apply { putSerializable("post", post) }
-                        findNavController().navigate(R.id.action_profileFragment_to_editPostFragment, bundle)
+                        val action = ProfileFragmentDirections.actionProfileFragmentToEditPostFragment(post)
+                        findNavController().navigate(action)
                     },
                     onDeleteClicked = { post ->
                         AlertDialog.Builder(requireContext())
