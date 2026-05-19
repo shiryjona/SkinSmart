@@ -1,5 +1,6 @@
 package com.example.skinsmart.ui.fragments
 
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.skinsmart.R
 import com.example.skinsmart.databinding.FragmentProfileBinding
+import com.example.skinsmart.model.SkinType
 import com.example.skinsmart.ui.adapters.SocialPostAdapter
 import com.example.skinsmart.ui.viewmodel.AuthViewModel
 import com.example.skinsmart.ui.viewmodel.FeedViewModel
@@ -64,14 +66,18 @@ class ProfileFragment : Fragment() {
         binding.rvMyPosts.layoutManager = LinearLayoutManager(requireContext())
 
         // Setup Skin Type Spinner
-        val skinTypes = arrayOf("Oily", "Dry", "Combination", "Normal", "Sensitive")
-        val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, skinTypes)
+        val skinTypeLabels = SkinType.entries.filter { it != SkinType.UNKNOWN }.map { it.label }
+        val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, skinTypeLabels)
         binding.spinnerSkinType.adapter = spinnerAdapter
 
         authViewModel.currentUser.observe(viewLifecycleOwner) { user ->
             if (user != null) {
                 binding.tvUserName.text = user.name.ifEmpty { "Guest User" }
-                binding.tvUserSkinType.text = "Skin Type: ${user.skinType}"
+                
+                val skinType = SkinType.fromString(user.skinType)
+                binding.tvUserSkinType.text = skinType.formattedLabel
+                binding.tvUserSkinType.setTextColor(skinType.textColorInt)
+                binding.tvUserSkinType.backgroundTintList = ColorStateList.valueOf(skinType.bgColorInt)
 
                 // Load Profile Image
                 if (profileBitmap == null && user.avatarUrl.isNotEmpty()) {
@@ -114,7 +120,12 @@ class ProfileFragment : Fragment() {
         authViewModel.cachedUser.observe(viewLifecycleOwner) { cached ->
             if (authViewModel.currentUser.value == null && cached != null) {
                 binding.tvUserName.text = cached.name
-                binding.tvUserSkinType.text = "Skin Type: ${cached.skinType} (Offline)"
+                
+                val skinType = SkinType.fromString(cached.skinType)
+                binding.tvUserSkinType.text = "${skinType.formattedLabel} (Offline)"
+                binding.tvUserSkinType.setTextColor(skinType.textColorInt)
+                binding.tvUserSkinType.backgroundTintList = ColorStateList.valueOf(skinType.bgColorInt)
+
                 if (cached.avatarUrl.isNotEmpty()) {
                     Picasso.get().load(cached.avatarUrl).into(binding.ivProfileImage)
                 }
@@ -213,8 +224,8 @@ class ProfileFragment : Fragment() {
             binding.etEditName.setText(user?.name)
 
             // Set spinner selection
-            val skinTypes = arrayOf("Oily", "Dry", "Combination", "Normal", "Sensitive")
-            val index = skinTypes.indexOf(user?.skinType).coerceAtLeast(0)
+            val skinTypeLabels = SkinType.entries.filter { it != SkinType.UNKNOWN }.map { it.label }
+            val index = skinTypeLabels.indexOf(user?.skinType).coerceAtLeast(0)
             binding.spinnerSkinType.setSelection(index)
         }
     }

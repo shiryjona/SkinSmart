@@ -15,6 +15,18 @@
         android:paddingTop="24dp"
         android:paddingBottom="32dp">
 
+        <!-- Logout Button at Top-End -->
+        <ImageButton
+            android:id="@+id/btnLogout"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="top|end"
+            android:layout_margin="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_logout"
+            app:tint="#ffffff"
+            android:contentDescription="Logout" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,7 +38,7 @@
                 android:id="@+id/layoutProfileImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="16dp"
                 android:clickable="false"
                 android:focusable="false">
 
@@ -82,16 +94,20 @@
                     android:id="@+id/tvUserSkinType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Skin Type: Loading..."
-                    android:textColor="#f3f4f6"
-                    android:layout_marginTop="4dp"/>
+                    tools:text="Oily Skin"
+                    android:background="@drawable/bg_skin_tag"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="4dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:textSize="14sp"/>
 
                 <!-- Stats Section -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="24dp"
                     android:gravity="center">
 
                     <LinearLayout
@@ -200,14 +216,6 @@
                     android:textColor="@android:color/white"
                     app:strokeColor="@android:color/white"
                     android:layout_marginEnd="8dp"/>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnLogout"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Log Out"
-                    android:textColor="#fee2e2"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSaveProfile"
