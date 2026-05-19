@@ -1,10 +1,13 @@
 package com.example.skinsmart.ui.adapters
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.skinsmart.R
 import com.example.skinsmart.databinding.ItemPostBinding
+import com.example.skinsmart.model.SkinType
 import com.example.skinsmart.model.SocialPost
 import com.squareup.picasso.Picasso
 import java.util.concurrent.TimeUnit
@@ -46,7 +49,13 @@ class SocialPostAdapter(
 
         fun bind(post: SocialPost) {
             binding.tvAuthorName.text = post.authorName
-            binding.tvAuthorSkinType.text = post.authorSkinType
+            
+            val skinType = SkinType.fromString(post.authorSkinType)
+            binding.tvAuthorSkinType.text = skinType.formattedLabel
+            binding.tvAuthorSkinType.setTextColor(skinType.textColorInt)
+            binding.tvAuthorSkinType.backgroundTintList = ColorStateList.valueOf(skinType.bgColorInt)
+            binding.tvAuthorSkinType.setBackgroundResource(R.drawable.bg_skin_tag)
+
             binding.tvProductName.text = post.productName
             binding.tvReviewText.text = post.reviewText
             binding.rbRating.rating = post.rating.toFloat()
