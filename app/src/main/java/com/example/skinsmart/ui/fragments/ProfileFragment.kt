@@ -57,7 +57,8 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        authViewModel = ViewModelProvider(requireActivity()).get(AuthViewModel::class.java)
+        val factory = ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+        authViewModel = ViewModelProvider(requireActivity(), factory).get(AuthViewModel::class.java)
         feedViewModel = ViewModelProvider(requireActivity()).get(FeedViewModel::class.java)
 
         binding.rvMyPosts.layoutManager = LinearLayoutManager(requireContext())
@@ -104,9 +105,28 @@ class ProfileFragment : Fragment() {
 
                 // Load the user's posts
                 feedViewModel.loadUserPosts(user.id)
+                authViewModel.refreshStats(user.id)
             } else {
                 findNavController().navigate(R.id.loginFragment)
             }
+        }
+
+        authViewModel.cachedUser.observe(viewLifecycleOwner) { cached ->
+            if (authViewModel.currentUser.value == null && cached != null) {
+                binding.tvUserName.text = cached.name
+                binding.tvUserSkinType.text = "Skin Type: ${cached.skinType} (Offline)"
+                if (cached.avatarUrl.isNotEmpty()) {
+                    Picasso.get().load(cached.avatarUrl).into(binding.ivProfileImage)
+                }
+            }
+        }
+
+        authViewModel.reviewCount.observe(viewLifecycleOwner) { count ->
+            binding.tvReviewCount.text = count.toString()
+        }
+
+        authViewModel.shelfCount.observe(viewLifecycleOwner) { count ->
+            binding.tvShelfCount.text = count.toString()
         }
 
         // Deliver loaded posts to the adapter whenever they change
