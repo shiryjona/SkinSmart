@@ -11,7 +11,7 @@
     <item
         android:id="@+id/createPostFragment"
         android:icon="@drawable/ic_add_review"
-        android:title="Add" />
+        android:title="" />
     <item
         android:id="@+id/smartShelfFragment"
         android:icon="@drawable/ic_shelf"
