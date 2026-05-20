@@ -1,6 +1,6 @@
 package com.example.skinsmart.ui.adapters
 
-import android.content.res.ColorStateList
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,15 +49,22 @@ class SocialPostAdapter(
 
         fun bind(post: SocialPost) {
             binding.tvAuthorName.text = post.authorName
-            
-            val skinType = SkinType.fromString(post.authorSkinType)
-            binding.tvAuthorSkinType.text = skinType.formattedLabel
-            binding.tvAuthorSkinType.setTextColor(skinType.textColorInt)
-            binding.tvAuthorSkinType.backgroundTintList = ColorStateList.valueOf(skinType.bgColorInt)
-            binding.tvAuthorSkinType.setBackgroundResource(R.drawable.bg_skin_tag)
+            binding.tvAuthorSkinType.text = post.authorSkinType
+
+            // Badge color by skin type — tint keeps the pill drawable shape intact
+            val (bgTint, textColor) = when (post.authorSkinType.lowercase()) {
+                "dry"         -> 0xFFDBEAFE.toInt() to 0xFF1D4ED8.toInt()
+                "combination" -> 0xFFEDE9FE.toInt() to 0xFF6D28D9.toInt()
+                "sensitive"   -> 0xFFFFE4E6.toInt() to 0xFFBE123C.toInt()
+                else          -> 0xFFFFEDD5.toInt() to 0xFFC2410C.toInt()
+            }
+            binding.tvAuthorSkinType.backgroundTintList =
+                android.content.res.ColorStateList.valueOf(bgTint)
+            binding.tvAuthorSkinType.setTextColor(textColor)
 
             binding.tvProductName.text = post.productName
-            binding.tvReviewText.text = post.reviewText
+            binding.tvReviewText.text = "\"${post.reviewText}\""
+            binding.tvReviewText.setTypeface(null, Typeface.ITALIC)
             binding.rbRating.rating = post.rating.toFloat()
 
             // Time-ago label

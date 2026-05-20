@@ -75,8 +75,7 @@
         <ImageView
             android:id="@+id/ivPostImage"
             android:layout_width="0dp"
-            android:layout_height="200dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="224dp"
             android:scaleType="centerCrop"
             android:visibility="gone"
             android:background="#f3f4f6"
@@ -139,7 +138,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="end"
             android:layout_marginHorizontal="12dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="12dp"
@@ -151,20 +149,28 @@
 
             <Button
                 android:id="@+id/btnEditPost"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="32dp"
                 android:text="Edit"
-                android:textSize="12sp"
-                android:backgroundTint="#0d9488"
-                android:layout_marginEnd="8dp"/>
+                android:textSize="11sp"
+                android:textColor="#6b7280"
+                app:strokeColor="#e5e7eb"
+                android:backgroundTint="#f9fafb"
+                android:layout_marginEnd="6dp"/>
 
             <Button
                 android:id="@+id/btnDeletePost"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="32dp"
                 android:text="Delete"
-                android:textSize="12sp"
-                android:backgroundTint="#ef4444"/>
+                android:textSize="11sp"
+                android:textColor="#ef4444"
+                app:strokeColor="#fecaca"
+                android:backgroundTint="#fef2f2"/>
 
         </LinearLayout>
 
