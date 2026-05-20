@@ -7,6 +7,7 @@ class SkinSmartApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         // Centralized Firebase initialization
+        // Explicitly initialize Firebase to prevent "not initialized" errors during startup
         FirebaseApp.initializeApp(this)
     }
 }

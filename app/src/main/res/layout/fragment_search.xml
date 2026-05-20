@@ -28,7 +28,7 @@
             android:layout_height="48dp"
             android:queryHint="Search by brand (e.g. maybelline)..."
             android:iconifiedByDefault="false"
-            android:background="@drawable/bg_pill_orange"
+            android:background="@drawable/bg_skin_tag"
             android:backgroundTint="#f3f4f6"/>
 
     </LinearLayout>
