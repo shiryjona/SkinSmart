@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.skinsmart.R
 import com.example.skinsmart.databinding.ItemPostBinding
+import com.example.skinsmart.model.SkinType
 import com.example.skinsmart.model.SocialPost
 import com.squareup.picasso.Picasso
 import java.util.concurrent.TimeUnit
