@@ -9,6 +9,7 @@ data class SocialPost(
     val postId: String = "",
     val userId: String = "",
     val authorName: String = "",
+    val authorAvatarUrl: String = "",
     val authorSkinType: String = "",
     val productName: String = "",
     val reviewText: String = "",

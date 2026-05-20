@@ -52,10 +52,11 @@ class FeedViewModel : ViewModel() {
     }
 
     /**
-     * Resets the post publication state.
+     * Resets the post publication state and general actions.
      */
     fun resetPostState() {
         _postPublished.value = null
+        _actionSuccess.value = null
     }
 
     /**

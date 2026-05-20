@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkinSmart Mockups - Full Flow with Signup</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        
+        .device {
+            width: 375px;
+            height: 750px;
+            background: white;
+            border-radius: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 12px solid #111827;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            margin: 20px auto;
+        }
+
+        .status-bar {
+            height: 40px;
+            background: black;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 50;
+        }
+
+        .content { 
+            flex: 1; 
+            overflow-y: auto; 
+            background-color: #f9fafb; 
+            position: relative;
+            scroll-behavior: auto; 
+        }
+
+        .bottom-nav {
+            height: 70px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-bottom: 10px;
+            z-index: 50;
+        }
+
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #9ca3af; font-size: 10px; cursor: pointer; }
+        .nav-item.active { color: #0d9488; }
+        .nav-item i { font-size: 20px; margin-bottom: 4px; }
+        
+        .fab {
+            background: #0d9488;
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(13, 148, 136, 0.4);
+            margin-bottom: 10px;
+        }
+        
+        .screen { display: none; min-height: 100%; flex-direction: column; }
+        .screen.active { display: flex; }
+        .hidden { display: none !important; }
+        
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .fade-in { animation: fadeIn 0.2s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen py-10">
+
+    <div class="mb-4 text-center">
+        <h2 class="text-xl font-bold text-gray-800">SkinSmart App Mockup</h2>
+        <p class="text-sm text-gray-500">נוסף מסך Sign Up (לחצי על Sign Up במסך הכניסה)</p>
+    </div>
+
+    <div class="device">
+        <div class="status-bar">
+            <span>09:41</span>
+            <div class="flex gap-1">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <div id="main-content" class="content hide-scrollbar">
+
+            <div id="screen-login" class="screen bg-teal-50 justify-center items-center p-8 h-full">
+                <div class="w-28 h-28 bg-teal-600 rounded-full flex items-center justify-center mb-6 shadow-lg border-4 border-teal-400">
+                    <i class="fas fa-pump-soap text-5xl text-white"></i>
+                </div>
+                
+                <h1 class="text-3xl font-bold text-teal-900 mb-2">SkinSmart</h1>
+                <p class="text-gray-500 mb-8">Share Routines. Discover Products.</p>
+                <div class="w-full space-y-4">
+                    <input type="email" placeholder="Email" class="w-full p-3 rounded-lg border border-gray-200 focus:outline-none focus:border-teal-500">
+                    <input type="password" placeholder="Password" class="w-full p-3 rounded-lg border border-gray-200 focus:outline-none focus:border-teal-500">
+                    <button onclick="nav('feed')" class="w-full bg-teal-600 text-white p-3 rounded-lg font-bold shadow hover:bg-teal-700 transition">Log In</button>
+                    <p class="text-center text-xs text-gray-400 mt-4">
+                        Don't have an account? <span onclick="nav('signup')" class="text-teal-600 font-bold cursor-pointer hover:underline">Sign Up</span>
+                    </p>
+                </div>
+            </div>
+
+            <div id="screen-signup" class="screen bg-teal-50 justify-center items-center p-8 h-full">
+                <div class="w-20 h-20 bg-teal-600 rounded-full flex items-center justify-center mb-4 shadow-lg border-4 border-teal-400">
+                    <i class="fas fa-pump-soap text-3xl text-white"></i>
+                </div>
+                
+                <h1 class="text-2xl font-bold text-teal-900 mb-6">Create Account</h1>
+                
+                <div class="w-full space-y-3">
+                    <input type="text" placeholder="Full Name" class="w-full p-3 rounded-lg border border-gray-200 focus:outline-none focus:border-teal-500">
+                    <input type="email" placeholder="Email" class="w-full p-3 rounded-lg border border-gray-200 focus:outline-none focus:border-teal-500">
+                    <input type="password" placeholder="Password" class="w-full p-3 rounded-lg border border-gray-200 focus:outline-none focus:border-teal-500">
+                    
+                    <div class="relative">
+                        <select class="w-full p-3 rounded-lg border border-gray-200 focus:outline-none focus:border-teal-500 text-gray-500 appearance-none bg-white">
+                            <option value="" disabled selected>Select Skin Type</option>
+                            <option value="oily">Oily Skin</option>
+                            <option value="dry">Dry Skin</option>
+                            <option value="combination">Combination</option>
+                            <option value="sensitive">Sensitive</option>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-3 top-4 text-gray-400 text-xs"></i>
+                    </div>
+
+                    <button onclick="nav('feed')" class="w-full bg-teal-600 text-white p-3 rounded-lg font-bold shadow hover:bg-teal-700 transition mt-4">Sign Up</button>
+                    
+                    <p class="text-center text-xs text-gray-400 mt-4">
+                        Already have an account? <span onclick="nav('login')" class="text-teal-600 font-bold cursor-pointer hover:underline">Log In</span>
+                    </p>
+                </div>
+            </div>
+
+            <div id="screen-feed" class="screen active">
+                <div class="bg-white p-4 sticky top-0 z-10 shadow-sm flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-teal-600 rounded-full flex items-center justify-center text-white"><i class="fas fa-pump-soap text-sm"></i></div>
+                        <span class="font-bold text-teal-900 text-lg">SkinSmart</span>
+                    </div>
+                    <button class="w-8 h-8 bg-gray-100 rounded-full text-gray-600"><i class="fas fa-filter"></i></button>
+                </div>
+                <div class="p-4 space-y-4 bg-gray-50 pb-20">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="p-3 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <img src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=150" class="w-9 h-9 rounded-full border object-cover">
+                                <div>
+                                    <h3 class="text-sm font-bold text-gray-800">Dana Cohen</h3>
+                                    <span class="text-[10px] bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-bold">Oily Skin</span>
+                                </div>
+                            </div>
+                            <span class="text-xs text-gray-400">2h</span>
+                        </div>
+                        <div class="bg-gray-100 h-56 flex items-center justify-center overflow-hidden">
+                            <img src="https://images.pexels.com/photos/4465124/pexels-photo-4465124.jpeg?auto=compress&cs=tinysrgb&w=600" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-3">
+                            <h4 class="font-bold text-gray-900 text-sm">CeraVe Foaming Cleanser</h4>
+                            <div class="flex text-yellow-400 text-xs my-1"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                            <p class="text-xs text-gray-600 mt-1">"Best cleanser for oily skin! Cleared my acne in 2 weeks."</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="p-3 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <img src="https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=150" class="w-9 h-9 rounded-full border object-cover">
+                                <div>
+                                    <h3 class="text-sm font-bold text-gray-800">Michal Levi</h3>
+                                    <span class="text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold">Dry Skin</span>
+                                </div>
+                            </div>
+                            <span class="text-xs text-gray-400">5h</span>
+                        </div>
+                        <div class="bg-gray-100 h-56 flex items-center justify-center overflow-hidden">
+                             <img src="https://images.pexels.com/photos/3685530/pexels-photo-3685530.jpeg?auto=compress&cs=tinysrgb&w=600" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-3">
+                            <h4 class="font-bold text-gray-900 text-sm">Niacinamide 10% + Zinc</h4>
+                            <div class="flex text-yellow-400 text-xs my-1"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></div>
+                            <p class="text-xs text-gray-600 mt-1">"Amazing texture! Helps a lot with redness and pores."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="screen-search" class="screen">
+                <div class="bg-white p-4 shadow-sm sticky top-0 z-10">
+                    <h2 class="text-lg font-bold text-gray-800 mb-3">Find Products</h2>
+                    <div class="relative">
+                        <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="Search products..." class="w-full bg-gray-100 p-3 pl-10 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 transition">
+                        <i class="fas fa-search absolute left-3 top-3.5 text-gray-400"></i>
+                    </div>
+                </div>
+                
+                <div id="search-default" class="p-4 space-y-3 bg-gray-50 flex-1">
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Trending Now</p>
+                    
+                    <div class="bg-white p-3 rounded-lg shadow-sm flex gap-3 items-center">
+                        <img src="https://images.pexels.com/photos/3685530/pexels-photo-3685530.jpeg?auto=compress&cs=tinysrgb&w=200" class="w-14 h-14 rounded bg-gray-50 object-cover">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-sm text-gray-800">Niacinamide 10% + Zinc</h4>
+                            <p class="text-[10px] text-gray-500">The Ordinary</p>
+                            <p class="text-xs font-bold text-teal-600 mt-1">$6.50</p>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <button onclick="nav('review_selected')" class="bg-teal-600 text-white px-3 py-1 rounded text-[10px] font-bold">Review</button>
+                            <button onclick="nav('shelf')" class="border border-gray-300 text-gray-600 px-3 py-1 rounded text-[10px]">Save</button>
+                        </div>
+                    </div>
+                     <div class="bg-white p-3 rounded-lg shadow-sm flex gap-3 items-center">
+                        <img src="https://images.pexels.com/photos/8128069/pexels-photo-8128069.jpeg?auto=compress&cs=tinysrgb&w=200" class="w-14 h-14 rounded bg-gray-50 object-cover">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-sm text-gray-800">Hydro Boost Water Gel</h4>
+                            <p class="text-[10px] text-gray-500">Neutrogena</p>
+                            <p class="text-xs font-bold text-teal-600 mt-1">$19.99</p>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <button onclick="nav('review_selected')" class="bg-teal-600 text-white px-3 py-1 rounded text-[10px] font-bold">Review</button>
+                            <button onclick="nav('shelf')" class="border border-gray-300 text-gray-600 px-3 py-1 rounded text-[10px]">Save</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="search-results" class="p-4 space-y-3 bg-gray-50 flex-1 hidden">
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Search Results</p>
+                    
+                    <div class="bg-white p-3 rounded-lg shadow-sm flex gap-3 items-center border-l-4 border-teal-500">
+                        <img src="https://images.pexels.com/photos/4465124/pexels-photo-4465124.jpeg?auto=compress&cs=tinysrgb&w=200" class="w-14 h-14 rounded bg-gray-50 object-cover">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-sm text-gray-800">Foaming Facial Cleanser</h4>
+                            <p class="text-[10px] text-gray-500">CeraVe</p>
+                            <p class="text-xs font-bold text-teal-600 mt-1">$14.99</p>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <button onclick="nav('review_selected')" class="bg-teal-600 text-white px-3 py-1 rounded text-[10px] font-bold">Review</button>
+                            <button onclick="nav('shelf')" class="border border-gray-300 text-gray-600 px-3 py-1 rounded text-[10px]">Save</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-3 rounded-lg shadow-sm flex gap-3 items-center border-l-4 border-teal-500">
+                        <img src="https://images.pexels.com/photos/3685523/pexels-photo-3685523.jpeg?auto=compress&cs=tinysrgb&w=200" class="w-14 h-14 rounded bg-gray-50 object-cover">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-sm text-gray-800">Hydrating Cleanser</h4>
+                            <p class="text-[10px] text-gray-500">CeraVe</p>
+                            <p class="text-xs font-bold text-teal-600 mt-1">$13.50</p>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <button onclick="nav('review_selected')" class="bg-teal-600 text-white px-3 py-1 rounded text-[10px] font-bold">Review</button>
+                            <button onclick="nav('shelf')" class="border border-gray-300 text-gray-600 px-3 py-1 rounded text-[10px]">Save</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-3 rounded-lg shadow-sm flex gap-3 items-center border-l-4 border-teal-500">
+                        <img src="https://images.pexels.com/photos/8128069/pexels-photo-8128069.jpeg?auto=compress&cs=tinysrgb&w=200" class="w-14 h-14 rounded bg-gray-50 object-cover">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-sm text-gray-800">Moisturizing Cream</h4>
+                            <p class="text-[10px] text-gray-500">CeraVe</p>
+                            <p class="text-xs font-bold text-teal-600 mt-1">$18.99</p>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <button onclick="nav('review_selected')" class="bg-teal-600 text-white px-3 py-1 rounded text-[10px] font-bold">Review</button>
+                            <button onclick="nav('shelf')" class="border border-gray-300 text-gray-600 px-3 py-1 rounded text-[10px]">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="screen-create" class="screen bg-white">
+                <div class="p-4 border-b flex items-center gap-3">
+                    <button onclick="nav('feed')"><i class="fas fa-chevron-left text-gray-600"></i></button>
+                    <h2 class="font-bold text-gray-800">Write Review</h2>
+                </div>
+                <div class="p-6 space-y-6">
+                    
+                    <div id="create-search-container" class="hidden">
+                        <label class="text-xs font-bold text-gray-700 block mb-2">Find Product</label>
+                        <div class="relative">
+                            <input type="text" placeholder="Search for a product..." class="w-full bg-gray-50 p-3 pl-10 rounded-lg text-sm border border-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-500">
+                            <i class="fas fa-search absolute left-3 top-3.5 text-gray-400"></i>
+                        </div>
+                    </div>
+
+                    <div id="create-selected-card" class="bg-teal-50 p-4 rounded-lg flex items-center gap-3 border border-teal-100 hidden">
+                        <div class="w-10 h-10 bg-white rounded flex items-center justify-center text-teal-400"><i class="fas fa-pump-soap"></i></div>
+                        <div>
+                            <p class="text-[10px] text-teal-600 font-bold uppercase">Selected Product</p>
+                            <p class="text-sm font-bold text-teal-900">Niacinamide 10% + Zinc</p>
+                            <p class="text-[10px] text-gray-500">The Ordinary</p>
+                        </div>
+                    </div>
+
+                    <div class="w-full h-40 border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center text-gray-400 bg-gray-50">
+                        <i class="fas fa-camera text-2xl mb-2"></i>
+                        <span class="text-xs">Tap to take photo</span>
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-gray-700 block mb-2">Rating</label>
+                        <div class="flex gap-2 text-yellow-400 text-xl">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star text-gray-300"></i>
+                        </div>
+                    </div>
+                    <div>
+                         <label class="text-xs font-bold text-gray-700 block mb-2">Review</label>
+                         <textarea class="w-full p-3 bg-gray-50 rounded-lg border border-gray-200 text-sm h-24" placeholder="Write here..."></textarea>
+                    </div>
+                    <button onclick="nav('feed')" class="w-full bg-teal-600 text-white py-3 rounded-lg font-bold shadow-md">Post Review</button>
+                </div>
+            </div>
+
+            <div id="screen-shelf" class="screen bg-gray-50">
+                <div class="bg-white p-4 shadow-sm">
+                    <h2 class="text-lg font-bold text-gray-800">My Shelf</h2>
+                    <p class="text-[10px] text-gray-500 font-medium">Your personal skincare stash ✨</p>
+                </div>
+                <div class="p-4 space-y-4">
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <div class="flex gap-3 mb-3">
+                            <img src="https://images.pexels.com/photos/8128069/pexels-photo-8128069.jpeg?auto=compress&cs=tinysrgb&w=200" class="w-12 h-12 rounded object-cover bg-gray-100">
+                            <div class="flex-1">
+                                <div class="flex justify-between">
+                                    <h3 class="font-bold text-gray-800 text-sm">Hydro Boost Water Gel</h3>
+                                    <i class="fas fa-trash text-gray-300"></i>
+                                </div>
+                                <p class="text-[10px] text-gray-500">Neutrogena</p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 p-2 rounded border border-yellow-100 relative">
+                            <p class="text-[9px] font-bold text-yellow-700 uppercase mb-1">Private Note</p>
+                            <p class="text-xs text-gray-700 italic">"Check price at Super-Pharm next week"</p>
+                            <i class="fas fa-pen absolute bottom-2 right-2 text-yellow-600 text-xs opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="screen-profile" class="screen bg-gray-50">
+                <div class="relative w-full">
+                    <div class="absolute top-0 w-full h-40 bg-teal-600 rounded-b-[40px] z-0"></div>
+                    <div class="relative z-10 flex flex-col">
+                        <div class="flex justify-end p-4">
+                             <button onclick="nav('login')" class="text-white/90 hover:text-white">
+                                <i class="fas fa-sign-out-alt text-lg"></i>
+                            </button>
+                        </div>
+                        <div class="px-6 mt-2 text-center">
+                            <div class="relative w-28 h-28 mx-auto">
+                                <div class="w-28 h-28 rounded-full border-4 border-white shadow-lg bg-white overflow-hidden">
+                                    <img src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=200" class="w-full h-full object-cover">
+                                </div>
+                                <div id="edit-avatar-overlay" class="hidden absolute inset-0 bg-black/40 rounded-full flex items-center justify-center cursor-pointer fade-in">
+                                    <i class="fas fa-camera text-white text-2xl"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-3 min-h-[60px]">
+                                <div id="profile-view-info">
+                                    <h1 class="text-2xl font-bold text-gray-900">Dana Cohen</h1>
+                                    <div class="mt-1">
+                                         <span class="text-xs bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-bold border border-orange-200">Oily Skin</span>
+                                    </div>
+                                </div>
+
+                                <div id="profile-edit-info" class="hidden space-y-2 fade-in">
+                                    <input type="text" value="Dana Cohen" class="text-center font-bold text-xl text-gray-900 bg-white border border-gray-300 rounded px-2 py-1 w-full">
+                                    <select class="block w-full text-center text-xs bg-white border border-gray-300 text-gray-700 py-1 rounded">
+                                        <option value="oily" selected>Oily Skin</option>
+                                        <option value="dry">Dry Skin</option>
+                                        <option value="combination">Combination</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="flex justify-center items-center gap-8 mt-6">
+                                <div class="text-center">
+                                    <span class="block text-xl font-bold text-gray-900">12</span>
+                                    <span class="text-[10px] text-gray-400 uppercase tracking-wide font-semibold">Reviews</span>
+                                </div>
+                                <div class="h-8 w-px bg-gray-200"></div>
+                                <div class="text-center">
+                                    <span class="block text-xl font-bold text-gray-900">5</span>
+                                    <span class="text-[10px] text-gray-400 uppercase tracking-wide font-semibold">Shelf</span>
+                                </div>
+                            </div>
+                            
+                             <button id="btn-edit-profile" onclick="toggleEditMode()" class="mt-6 mb-6 w-full py-2.5 bg-white border border-gray-300 rounded-xl text-xs font-bold text-gray-600 shadow-sm hover:bg-gray-50 transition">
+                                Edit Profile
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="px-4 pb-20 border-t border-gray-100 bg-gray-50 pt-6">
+                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 ml-1">My Reviews</h3>
+                    <div class="flex flex-col gap-3">
+                        <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-100">
+                            <div class="flex gap-3">
+                                <div class="w-20 h-20 shrink-0 bg-gray-100 rounded-lg overflow-hidden">
+                                    <img src="https://images.pexels.com/photos/4465124/pexels-photo-4465124.jpeg?auto=compress&cs=tinysrgb&w=400" class="w-full h-full object-cover">
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <div class="flex justify-between items-start">
+                                            <h4 class="font-bold text-sm text-gray-900 line-clamp-1">CeraVe Foaming Cleanser</h4>
+                                            <div class="text-yellow-400 text-[10px] whitespace-nowrap"><i class="fas fa-star"></i> 5.0</div>
+                                        </div>
+                                        <p class="text-xs text-gray-500 mt-1 line-clamp-2">"Best cleanser for oily skin! Cleared my acne in 2 weeks..."</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <button class="flex-1 bg-gray-50 hover:bg-gray-100 text-gray-600 text-[10px] py-1.5 rounded-lg font-semibold border border-gray-200">Edit</button>
+                                        <button class="flex-1 bg-red-50 hover:bg-red-100 text-red-500 text-[10px] py-1.5 rounded-lg font-semibold border border-red-100">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 opacity-70">
+                            <div class="flex gap-3">
+                                <div class="w-20 h-20 shrink-0 bg-gray-100 rounded-lg overflow-hidden">
+                                    <img src="https://images.pexels.com/photos/3685523/pexels-photo-3685523.jpeg?auto=compress&cs=tinysrgb&w=200" class="w-full h-full object-cover">
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <div class="flex justify-between items-start">
+                                            <h4 class="font-bold text-sm text-gray-900">La Roche-Posay</h4>
+                                            <div class="text-yellow-400 text-[10px]"><i class="fas fa-star"></i> 4.5</div>
+                                        </div>
+                                        <p class="text-xs text-gray-500 mt-1">"Good texture, but..."</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <button class="flex-1 bg-gray-50 text-gray-600 text-[10px] py-1.5 rounded-lg border border-gray-200">Edit</button>
+                                        <button class="flex-1 bg-red-50 text-red-500 text-[10px] py-1.5 rounded-lg border border-red-100">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="bottom-nav" class="bottom-nav">
+            <div class="nav-item active" onclick="nav('feed')">
+                <i class="fas fa-home"></i><span>Home</span>
+            </div>
+            <div class="nav-item" onclick="nav('search')">
+                <i class="fas fa-search"></i><span>Discover</span>
+            </div>
+            <div class="fab" onclick="nav('review_new')">
+                <i class="fas fa-plus"></i>
+            </div>
+            <div class="nav-item" onclick="nav('shelf')">
+                <i class="fas fa-heart"></i><span>My Shelf</span>
+            </div>
+            <div class="nav-item" onclick="nav('profile')">
+                <i class="fas fa-user"></i><span>Profile</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function nav(screenId) {
+            let actualScreenId = screenId;
+            let reviewMode = null;
+
+            if (screenId === 'review_new') {
+                actualScreenId = 'create';
+                reviewMode = 'new';
+            } else if (screenId === 'review_selected') {
+                actualScreenId = 'create';
+                reviewMode = 'selected';
+            }
+
+            document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+            
+            const newScreen = document.getElementById('screen-' + actualScreenId);
+            if(newScreen) newScreen.classList.add('active');
+            
+            if (actualScreenId === 'create') {
+                const searchContainer = document.getElementById('create-search-container');
+                const selectedCard = document.getElementById('create-selected-card');
+
+                if (reviewMode === 'new') {
+                    searchContainer.classList.remove('hidden');
+                    selectedCard.classList.add('hidden');
+                } else if (reviewMode === 'selected') {
+                    searchContainer.classList.add('hidden');
+                    selectedCard.classList.remove('hidden');
+                }
+            }
+
+            const contentArea = document.getElementById('main-content');
+            if(contentArea) contentArea.scrollTop = 0;
+
+            const navBar = document.getElementById('bottom-nav');
+            if(screenId === 'login' || screenId === 'signup') {
+                navBar.style.display = 'none';
+            } else {
+                navBar.style.display = 'flex';
+                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                
+                if(actualScreenId === 'feed') document.querySelectorAll('.nav-item')[0].classList.add('active');
+                if(actualScreenId === 'search') document.querySelectorAll('.nav-item')[1].classList.add('active');
+                if(actualScreenId === 'shelf') document.querySelectorAll('.nav-item')[2].classList.add('active');
+                if(actualScreenId === 'profile') document.querySelectorAll('.nav-item')[3].classList.add('active');
+            }
+        }
+
+        function handleSearch(query) {
+            const defaultView = document.getElementById('search-default');
+            const resultsView = document.getElementById('search-results');
+            
+            if (query && query.length > 0) {
+                defaultView.classList.add('hidden');
+                resultsView.classList.remove('hidden');
+            } else {
+                defaultView.classList.remove('hidden');
+                resultsView.classList.add('hidden');
+            }
+        }
+
+        function toggleEditMode() {
+            const viewInfo = document.getElementById('profile-view-info');
+            const editInfo = document.getElementById('profile-edit-info');
+            const btn = document.getElementById('btn-edit-profile');
+            const avatarOverlay = document.getElementById('edit-avatar-overlay');
+
+            if(viewInfo.classList.contains('hidden')) {
+                viewInfo.classList.remove('hidden');
+                editInfo.classList.add('hidden');
+                avatarOverlay.classList.add('hidden');
+                btn.innerText = 'Edit Profile';
+                btn.classList.remove('bg-teal-600', 'text-white');
+                btn.classList.add('bg-white', 'text-gray-600');
+            } else {
+                viewInfo.classList.add('hidden');
+                editInfo.classList.remove('hidden');
+                avatarOverlay.classList.remove('hidden');
+                btn.innerText = 'Save Changes';
+                btn.classList.remove('bg-white', 'text-gray-600');
+                btn.classList.add('bg-teal-600', 'text-white');
+            }
+        }
+        
+        nav('login');
+    </script>
+</body>
+</html>

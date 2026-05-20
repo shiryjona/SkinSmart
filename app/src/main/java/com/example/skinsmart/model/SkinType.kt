@@ -1,27 +1,26 @@
 package com.example.skinsmart.model
 
-import android.content.res.ColorStateList
 import android.graphics.Color
 
 enum class SkinType(
-    val displayName: String,
+    val label: String,
     val bgColorHex: String,
     val textColorHex: String
 ) {
-    OILY("Oily Skin", "#E0F2F1", "#00695C"),        // Teal
-    DRY("Dry Skin", "#FFF3E0", "#E65100"),         // Orange
-    COMBINATION("Combination", "#F3E5F5", "#4A148C"), // Purple
-    NORMAL("Normal", "#E8F5E9", "#1B5E20"),        // Green
-    SENSITIVE("Sensitive", "#FFEBEE", "#B71C1C"); // Red
-
-    fun getBackgroundColor(): Int = Color.parseColor(bgColorHex)
-    fun getTextColor(): Int = Color.parseColor(textColorHex)
-    
-    fun getBackgroundColorStateList(): ColorStateList = ColorStateList.valueOf(getBackgroundColor())
+    DRY("Dry", "#FFCDD2", "#B71C1C"),
+    OILY("Oily", "#B2EBF2", "#006064"),
+    COMBINATION("Combination", "#E1BEE7", "#4A148C"),
+    NORMAL("Normal", "#C8E6C9", "#1B5E20"),
+    SENSITIVE("Sensitive", "#FFF9C4", "#F57F17"),
+    UNKNOWN("Unknown", "#F3F4F6", "#374151");
 
     companion object {
-        fun fromString(value: String): SkinType {
-            return values().find { it.displayName.equals(value, ignoreCase = true) } ?: NORMAL
+        fun fromString(type: String?): SkinType {
+            return entries.find { it.label.equals(type, ignoreCase = true) } ?: UNKNOWN
         }
     }
+
+    val bgColorInt: Int get() = Color.parseColor(bgColorHex)
+    val textColorInt: Int get() = Color.parseColor(textColorHex)
+    val formattedLabel: String get() = if (this == UNKNOWN) "Unknown" else "$label Skin"
 }

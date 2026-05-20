@@ -46,6 +46,8 @@ class EditPostFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         feedViewModel = ViewModelProvider(requireActivity()).get(FeedViewModel::class.java)
+        // Reset state to prevent immediately triggering success logic from a previous edit
+        feedViewModel.resetPostState()
 
         currentPost = EditPostFragmentArgs.fromBundle(requireArguments()).post
 
@@ -95,6 +97,7 @@ class EditPostFragment : Fragment() {
         feedViewModel.actionSuccess.observe(viewLifecycleOwner) { message ->
             if (message == "Post updated") {
                 Toast.makeText(requireContext(), "Post updated!", Toast.LENGTH_SHORT).show()
+                feedViewModel.resetPostState() // Clear state immediately after success
                 findNavController().navigateUp()
             }
         }

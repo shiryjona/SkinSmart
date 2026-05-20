@@ -8,8 +8,8 @@ import kotlinx.coroutines.tasks.await
 
 class FeedRepository {
 
-    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
-    private val postsCollection = firestore.collection("social_posts")
+    private val firestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
+    private val postsCollection by lazy { firestore.collection("social_posts") }
 
     /**
      * Publishes a new review to the global Firestore collection

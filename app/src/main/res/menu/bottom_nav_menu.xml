@@ -1,29 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
         android:id="@+id/homeFragment"
-        android:icon="@android:drawable/ic_menu_sort_by_size"
-        android:title="Feed" />
-
+        android:icon="@drawable/ic_home"
+        android:title="Home" />
     <item
         android:id="@+id/searchFragment"
-        android:icon="@android:drawable/ic_menu_search"
+        android:icon="@drawable/ic_discover"
         android:title="Discover" />
-        
+
+    <!-- Placeholder to create a gap for the FAB -->
     <item
-        android:id="@+id/createPostFragment"
-        android:icon="@android:drawable/ic_menu_add"
-        android:title="Post" />
+        android:id="@+id/placeholder"
+        android:title=""
+        android:enabled="false" />
 
     <item
         android:id="@+id/smartShelfFragment"
-        android:icon="@android:drawable/ic_menu_save"
+        android:icon="@drawable/ic_shelf"
         android:title="Shelf" />
-
     <item
         android:id="@+id/profileFragment"
-        android:icon="@android:drawable/ic_menu_myplaces"
+        android:icon="@drawable/ic_profile"
         android:title="Profile" />
-        
 </menu>
