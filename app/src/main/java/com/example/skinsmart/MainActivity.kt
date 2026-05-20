@@ -29,13 +29,19 @@ class MainActivity : AppCompatActivity() {
 
         bottomNav.setupWithNavController(navController)
 
-        // Hide BottomNav on Auth Screens
+        val fab = findViewById<View>(R.id.fab_add_post)
+        val bottomAppBar = findViewById<View>(R.id.bottom_app_bar)
+
+        fab.setOnClickListener {
+            navController.navigate(R.id.createPostFragment)
+        }
+
+        // Hide Navigation on Auth Screens
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.loginFragment || destination.id == R.id.registerFragment) {
-                bottomNav.visibility = View.GONE
-            } else {
-                bottomNav.visibility = View.VISIBLE
-            }
+            val isAuthScreen = destination.id == R.id.loginFragment || destination.id == R.id.registerFragment
+            bottomNav.visibility = if (isAuthScreen) View.GONE else View.VISIBLE
+            bottomAppBar.visibility = if (isAuthScreen) View.GONE else View.VISIBLE
+            fab.visibility = if (isAuthScreen) View.GONE else View.VISIBLE
         }
     }
 }

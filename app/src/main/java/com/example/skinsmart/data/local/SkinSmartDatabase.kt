@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [ShelfProduct::class, LocalUser::class], version = 1, exportSchema = false)
+@Database(entities = [ShelfProduct::class], version = 2, exportSchema = false)
 abstract class SkinSmartDatabase : RoomDatabase() {
 
     abstract fun skinSmartDao(): SkinSmartDao
@@ -20,7 +20,9 @@ abstract class SkinSmartDatabase : RoomDatabase() {
                     context.applicationContext,
                     SkinSmartDatabase::class.java,
                     "skinsmart_local_db"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
                 INSTANCE = instance
                 instance
             }
