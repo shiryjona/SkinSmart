@@ -1,5 +1,6 @@
 package com.example.skinsmart.model
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 
 enum class SkinType(
@@ -23,4 +24,6 @@ enum class SkinType(
     val bgColorInt: Int get() = Color.parseColor(bgColorHex)
     val textColorInt: Int get() = Color.parseColor(textColorHex)
     val formattedLabel: String get() = if (this == UNKNOWN) "Unknown" else "$label Skin"
+
+    fun getBackgroundColorStateList(): ColorStateList = ColorStateList.valueOf(bgColorInt)
 }
