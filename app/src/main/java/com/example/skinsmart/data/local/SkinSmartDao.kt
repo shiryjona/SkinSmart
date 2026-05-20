@@ -28,4 +28,18 @@ interface SkinSmartDao {
 
     @Delete
     suspend fun deleteShelfProduct(product: ShelfProduct): Int
+
+    @Query("SELECT COUNT(*) FROM shelf_products")
+    fun getShelfCount(): LiveData<Int>
+
+    // ======== User Profile Cache Operations ========
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertUser(user: LocalUser)
+
+    @Query("SELECT * FROM user_profile WHERE id = :userId LIMIT 1")
+    suspend fun getUserById(userId: String): LocalUser?
+
+    @Query("SELECT * FROM user_profile LIMIT 1")
+    fun getCachedUser(): LiveData<LocalUser?>
 }

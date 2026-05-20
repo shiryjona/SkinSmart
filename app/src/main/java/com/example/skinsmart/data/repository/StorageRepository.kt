@@ -9,7 +9,7 @@ import kotlinx.coroutines.tasks.await
  */
 class StorageRepository {
 
-    private val storage = FirebaseStorage.getInstance()
+    private val storage by lazy { FirebaseStorage.getInstance() }
 
     /**
      * Uploads an image URI to Firebase Storage under the "posts/" folder.
