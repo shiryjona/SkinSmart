@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.skinsmart.R
 import com.example.skinsmart.databinding.FragmentCreatePostBinding
 import com.example.skinsmart.model.SocialPost
 import com.example.skinsmart.ui.viewmodel.AuthViewModel
@@ -103,7 +104,8 @@ class CreatePostFragment : Fragment() {
         feedViewModel.postPublished.observe(viewLifecycleOwner) { success ->
             if (success == true) {
                 Toast.makeText(requireContext(), "Post published!", Toast.LENGTH_SHORT).show()
-                findNavController().navigateUp()
+                // Navigate directly back to the Feed (HomeFragment)
+                findNavController().popBackStack(R.id.homeFragment, false)
             }
         }
 
