@@ -83,8 +83,8 @@ class ProfileFragment : Fragment() {
                 if (profileBitmap == null && user.avatarUrl.isNotEmpty()) {
                     Picasso.get()
                         .load(user.avatarUrl)
-                        .placeholder(R.drawable.ic_launcher_foreground) // Use a proper resource
-                        .error(R.drawable.ic_launcher_foreground)
+                        .placeholder(R.drawable.ic_profile_white)
+                        .error(R.drawable.ic_profile_white)
                         .into(binding.ivProfileImage)
                 }
 
@@ -170,7 +170,7 @@ class ProfileFragment : Fragment() {
             if (user != null && user.avatarUrl.isNotEmpty()) {
                 Picasso.get().load(user.avatarUrl).into(binding.ivProfileImage)
             } else {
-                binding.ivProfileImage.setImageResource(R.drawable.ic_launcher_foreground)
+                binding.ivProfileImage.setImageResource(R.drawable.ic_profile_white)
             }
         }
 
