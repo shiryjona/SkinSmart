@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.example.skinsmart.data.local.LocalUser
 import com.example.skinsmart.data.local.SkinSmartDatabase
@@ -27,8 +28,14 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     // Cached user for offline availability (Room)
     val cachedUser: LiveData<LocalUser?> = dao.getCachedUser()
 
-    // Stats observed from Room (Shelf) and Firestore (Reviews)
-    val shelfCount: LiveData<Int> = dao.getShelfCount()
+    // Listen for changes in the user's shelf count
+    val shelfCount: LiveData<Int> = _currentUser.switchMap { user ->
+        if (user != null) {
+            dao.getShelfCount(user.id)
+        } else {
+            MutableLiveData(0)
+        }
+    }
     private val _reviewCount = MutableLiveData<Int>(0)
     val reviewCount: LiveData<Int> = _reviewCount
 

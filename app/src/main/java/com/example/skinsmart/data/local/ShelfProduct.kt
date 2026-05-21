@@ -8,10 +8,13 @@ import androidx.room.PrimaryKey
  * This entity is stored exclusively in the local Room database to ensure privacy
  * for the user's personal notes.
  */
-@Entity(tableName = "shelf_products")
+@Entity(
+    tableName = "shelf_products",
+    primaryKeys = ["id", "userId"] // Ensures the ability to save same product multiple times
+)
 data class ShelfProduct(
-    @PrimaryKey
     val id: String, // E.g., from the Makeup API
+    val userId: String,
     val name: String,
     val brand: String,
     val imageUrl: String,

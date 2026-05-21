@@ -84,6 +84,7 @@ class SearchFragment : Fragment() {
     private fun saveProductToShelf(product: MakeupProduct) {
         val shelfProduct = ShelfProduct(
             id = product.id.ifEmpty { product.name },
+            userId = "",
             name = product.name,
             brand = product.brand ?: "",
             imageUrl = product.imageUrl ?: "",
