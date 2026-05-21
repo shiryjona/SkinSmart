@@ -11,7 +11,7 @@
 
     <!-- Placeholder to create a gap for the FAB -->
     <item
-        android:id="@+id/placeholder"
+        android:id="@+id/createPostFragment"
         android:title=""
         android:enabled="false" />
 

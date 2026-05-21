@@ -3,6 +3,7 @@ package com.example.skinsmart
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -33,7 +34,17 @@ class MainActivity : AppCompatActivity() {
         val bottomAppBar = findViewById<View>(R.id.bottom_app_bar)
 
         fab.setOnClickListener {
-            navController.navigate(R.id.createPostFragment)
+            val options = NavOptions.Builder()
+                .setLaunchSingleTop(true)
+                .setRestoreState(true)
+                .setPopUpTo(
+                    navController.graph.startDestinationId,
+                    inclusive = false,
+                    saveState = true
+                )
+                .build()
+
+            navController.navigate(R.id.createPostFragment, null, options)
         }
 
         // Hide Navigation on Auth Screens
