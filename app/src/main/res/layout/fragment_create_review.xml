@@ -45,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:text="Post Review"
-        android:backgroundTint="#0d9488"
+        android:backgroundTint="@color/primary_purple"
         android:textColor="#ffffff"/>
 
 </LinearLayout>
