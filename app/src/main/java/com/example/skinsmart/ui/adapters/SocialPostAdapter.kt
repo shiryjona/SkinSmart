@@ -48,6 +48,20 @@ class SocialPostAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(post: SocialPost) {
+            // Load author avatar
+            if (post.authorAvatarUrl.isNotEmpty()) {
+                Picasso.get()
+                    .load(post.authorAvatarUrl)
+                    .placeholder(R.drawable.ic_profile_white)
+                    .error(R.drawable.ic_profile_white)
+                    .fit()
+                    .centerCrop()
+                    .into(binding.ivAuthorAvatar)
+            } else {
+                // In case the author doesn't have an avatar, use a default placeholder
+                binding.ivAuthorAvatar.setImageResource(R.drawable.ic_profile_white)
+            }
+
             binding.tvAuthorName.text = post.authorName
             
             val skinType = SkinType.fromString(post.authorSkinType)

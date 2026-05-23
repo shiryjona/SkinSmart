@@ -8,6 +8,7 @@ data class Post(
     val authorId: String = "",
     val authorName: String = "",
     val authorSkinType: String = "",
+    val authorAvatarUrl: String = "",
     val productName: String = "",
     val content: String = "",
     val rating: Float = 0f,

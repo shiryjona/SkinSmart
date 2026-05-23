@@ -28,7 +28,9 @@
             android:layout_margin="12dp"
             android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
-            android:src="@android:drawable/ic_menu_camera"
+            android:src="@drawable/ic_profile_white"
+            android:background="#d1d5db"
+            android:padding="2dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
