@@ -3,20 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:animateLayoutChanges="true"> <com.google.android.material.appbar.MaterialToolbar
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@android:color/white"
+    app:elevation="2dp">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@android:color/white"
-        app:elevation="2dp">
+        android:layout_height="match_parent"
+        android:paddingEnd="16dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:layout_alignParentStart="true">
 
             <ImageView
                 android:id="@+id/ivFeedAppLogo"
@@ -38,7 +43,38 @@
 
         </LinearLayout>
 
-    </com.google.android.material.appbar.MaterialToolbar>
+        <ImageButton
+            android:id="@+id/btnToggleFilter"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/bg_filter_button"
+            android:src="@drawable/ic_filter"
+            app:tint="@color/selector_filter_icon" />
+
+    </RelativeLayout>
+</com.google.android.material.appbar.MaterialToolbar>
+
+    <HorizontalScrollView
+        android:id="@+id/scrollSkinFilters"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:clipToPadding="false"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:visibility="gone">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/cgSkinTypeFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleSelection="false">
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </HorizontalScrollView>
 
     <ProgressBar
         android:id="@+id/progressBar"

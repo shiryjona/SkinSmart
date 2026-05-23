@@ -74,6 +74,20 @@ class HomeFragment : Fragment() {
         binding.rvFeed.layoutManager = LinearLayoutManager(requireContext())
         binding.rvFeed.setHasFixedSize(false)
 
+        binding.btnToggleFilter.setOnClickListener {
+            val isVisible = binding.scrollSkinFilters.visibility == View.VISIBLE
+
+            if (isVisible) {
+                // If its opened -> close
+                binding.scrollSkinFilters.visibility = View.GONE
+                binding.btnToggleFilter.isSelected = false
+            } else {
+                // If its closed -> open
+                binding.scrollSkinFilters.visibility = View.VISIBLE
+                binding.btnToggleFilter.isSelected = true
+            }
+        }
+
         // Observe feed posts
         feedViewModel.posts.observe(viewLifecycleOwner) { posts ->
             if (::adapter.isInitialized) {
