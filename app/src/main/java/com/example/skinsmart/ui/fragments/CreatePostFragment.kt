@@ -84,6 +84,7 @@ class CreatePostFragment : Fragment() {
                 val newPost = SocialPost(
                     userId = currentUser.id,
                     authorName = currentUser.name,
+                    authorAvatarUrl = currentUser.avatarUrl,
                     authorSkinType = currentUser.skinType,
                     productName = productName,
                     reviewText = text,
