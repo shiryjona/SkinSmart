@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.skinsmart.R
 import com.example.skinsmart.databinding.FragmentRegisterBinding
+import com.example.skinsmart.model.SkinType
 import com.example.skinsmart.ui.viewmodel.AuthViewModel
 
 class RegisterFragment : Fragment() {
@@ -33,8 +34,8 @@ class RegisterFragment : Fragment() {
         authViewModel = ViewModelProvider(requireActivity()).get(AuthViewModel::class.java)
 
         // Setup Skin Type Spinner
-        val skinTypes = arrayOf("Oily Skin", "Dry Skin", "Combination", "Normal", "Sensitive")
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, skinTypes)
+        val skinTypeLabels = SkinType.entries.filter { it != SkinType.UNKNOWN }.map { it.label }
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, skinTypeLabels)
         binding.spinnerSkinType.adapter = adapter
 
         authViewModel.currentUser.observe(viewLifecycleOwner) { user ->
@@ -54,7 +55,7 @@ class RegisterFragment : Fragment() {
         }
 
         binding.tvBackToLogin.setOnClickListener {
-            // Navigate back to Login
+            // Navigate back to Log-in
             findNavController().popBackStack()
         }
 

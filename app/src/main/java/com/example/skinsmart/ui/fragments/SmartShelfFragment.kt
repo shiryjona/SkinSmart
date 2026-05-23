@@ -62,7 +62,7 @@ class SmartShelfFragment : Fragment() {
         binding.rvShelf.adapter = adapter
 
         // Room LiveData — updates automatically on any DB change
-        shelfViewModel.allProducts.observe(viewLifecycleOwner) { products ->
+        shelfViewModel.getUserShelfProducts().observe(viewLifecycleOwner) { products ->
             adapter.updateData(products)
             binding.tvEmptyShelf.visibility = if (products.isEmpty()) View.VISIBLE else View.GONE
             binding.rvShelf.visibility = if (products.isEmpty()) View.GONE else View.VISIBLE

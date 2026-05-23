@@ -3,24 +3,32 @@ package com.example.skinsmart.ui.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.skinsmart.data.local.ShelfProduct
 import com.example.skinsmart.data.local.SkinSmartDatabase
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
-/**
- * AndroidViewModel is used here instead of regular ViewModel because Room Database requires Context.
- */
 class ShelfViewModel(application: Application) : AndroidViewModel(application) {
 
     private val dao = SkinSmartDatabase.getDatabase(application).skinSmartDao()
 
-    // Room automatically updates LiveData without needing MutableLiveData internally!
-    val allProducts: LiveData<List<ShelfProduct>> = dao.getAllShelfProducts()
+    private val currentUserId: String?
+        get() = FirebaseAuth.getInstance().currentUser?.uid
+
+    // Fetch all products from the local database by the current user's ID
+    fun getUserShelfProducts(): LiveData<List<ShelfProduct>> {
+        val uid = currentUserId ?: return MutableLiveData(emptyList())
+        return dao.getAllShelfProducts(uid)
+    }
 
     fun addProductToShelf(product: ShelfProduct) {
+        val uid = currentUserId ?: return
+        // Create a copy of the product with the current user ID
+        val productWithUser = product.copy(userId = uid)
         viewModelScope.launch {
-            dao.insertShelfProduct(product)
+            dao.insertShelfProduct(productWithUser)
         }
     }
 

@@ -11,14 +11,12 @@ import androidx.room.Update
 @Dao
 @JvmSuppressWildcards
 interface SkinSmartDao {
-    
-    // ======== Smart Shelf Operations ========
-    
-    @Query("SELECT * FROM shelf_products")
-    fun getAllShelfProducts(): LiveData<List<ShelfProduct>>
-    
-    @Query("SELECT * FROM shelf_products WHERE id = :productId LIMIT 1")
-    suspend fun getShelfProductById(productId: String): ShelfProduct?
+
+    @Query("SELECT * FROM shelf_products WHERE userId = :userId")
+    fun getAllShelfProducts(userId: String): LiveData<List<ShelfProduct>>
+
+    @Query("SELECT * FROM shelf_products WHERE id = :productId AND userId = :userId LIMIT 1")
+    suspend fun getShelfProductById(productId: String, userId: String): ShelfProduct?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertShelfProduct(product: ShelfProduct): Long
@@ -29,11 +27,10 @@ interface SkinSmartDao {
     @Delete
     suspend fun deleteShelfProduct(product: ShelfProduct): Int
 
-    @Query("SELECT COUNT(*) FROM shelf_products")
-    fun getShelfCount(): LiveData<Int>
+    @Query("SELECT COUNT(*) FROM shelf_products WHERE userId = :userId")
+    fun getShelfCount(userId: String): LiveData<Int>
 
     // ======== User Profile Cache Operations ========
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUser(user: LocalUser)
 
