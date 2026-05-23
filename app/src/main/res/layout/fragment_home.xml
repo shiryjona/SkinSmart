@@ -10,10 +10,35 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@android:color/white"
-        app:title="SkinSmart Feed"
-        app:titleTextColor="#111827"
-        app:titleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-        app:elevation="2dp" />
+        app:elevation="2dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/ivFeedAppLogo"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/app_logo_transparent"
+                android:contentDescription="SkinSmart Logo" />
+
+            <TextView
+                android:id="@+id/tvFeedTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SkinSmart Feed"
+                android:textColor="#111827"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
+
+        </LinearLayout>
+
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <ProgressBar
         android:id="@+id/progressBar"
