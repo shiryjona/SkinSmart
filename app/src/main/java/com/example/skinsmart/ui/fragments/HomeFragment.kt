@@ -18,6 +18,7 @@ import com.google.android.material.chip.Chip
 import android.content.res.ColorStateList
 import android.graphics.Color
 import com.example.skinsmart.model.SkinType
+import com.example.skinsmart.model.SocialPost
 
 class HomeFragment : Fragment() {
 
@@ -27,6 +28,8 @@ class HomeFragment : Fragment() {
     private lateinit var feedViewModel: FeedViewModel
     private lateinit var authViewModel: AuthViewModel
     private lateinit var adapter: SocialPostAdapter
+    private var originalPosts: List<SocialPost> = emptyList()
+    private val selectedSkinTypes = mutableSetOf<SkinType>()
 
     private fun setupSkinTypeChips() {
         binding.cgSkinTypeFilter.removeAllViews()
@@ -42,12 +45,22 @@ class HomeFragment : Fragment() {
                     intArrayOf(-android.R.attr.state_checked)
                 )
 
+                // Listener to handle chip selection
+                setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked) {
+                        selectedSkinTypes.add(skinType) // Was clicked add to list
+                    } else {
+                        selectedSkinTypes.remove(skinType) // Unclicked remove from list
+                    }
+                    // Active local filter
+                    applyLocalFilter()
+                }
+
                 val backgroundColors = intArrayOf(
                     skinType.bgColorInt,
                     Color.parseColor("#F3F4F6")
                 )
 
-                // השורה שהייתה חסרה:
                 chipBackgroundColor = ColorStateList(states, backgroundColors)
 
                 val textColors = intArrayOf(
@@ -61,6 +74,22 @@ class HomeFragment : Fragment() {
             }
 
             binding.cgSkinTypeFilter.addView(chip)
+        }
+    }
+
+    private fun applyLocalFilter() {
+        if (selectedSkinTypes.isEmpty()) {
+            // When nothing is selected, show all posts
+            adapter.submitList(originalPosts)
+        } else {
+            // When skin types are selected, filter the posts
+            val filteredList = originalPosts.filter { post ->
+                val postSkinType = SkinType.fromString(post.authorSkinType)
+
+                // Check if the post's skin type is in the selected types
+                selectedSkinTypes.contains(postSkinType)
+            }
+            adapter.submitList(filteredList)
         }
     }
 
@@ -83,7 +112,7 @@ class HomeFragment : Fragment() {
         binding.rvFeed.layoutManager = LinearLayoutManager(requireContext())
         binding.rvFeed.setHasFixedSize(false)
 
-        // 1. יצירת האדפטר באופן מיידי ללא ה-ID של המשתמש (כדי שהפיד יוכל להיטען מיד)
+        // Create the adapter with empty list and null currentUserId
         adapter = SocialPostAdapter(
             posts = emptyList(),
             currentUserId = null,
@@ -96,7 +125,7 @@ class HomeFragment : Fragment() {
                     .setTitle("Delete Post")
                     .setMessage("Are you sure you want to delete this review?")
                     .setPositiveButton("Delete") { _, _ ->
-                        // נשתמש ב-ID מהאדפטר, כי הוא כבר יעודכן עד כאן
+                        // Use user's UID to delete the post
                         adapter.currentUserId?.let { uid ->
                             feedViewModel.deletePost(post.postId, uid)
                         }
@@ -107,18 +136,19 @@ class HomeFragment : Fragment() {
         )
         binding.rvFeed.adapter = adapter
 
-        // 2. כשהמשתמש מגיע, אנחנו רק מעדכנים את האדפטר הקיים
+        // Update the adapter with the current user's UID
         authViewModel.currentUser.observe(viewLifecycleOwner) { user ->
             if (user != null) {
                 adapter.currentUserId = user.id
-                // מרעננים את התצוגה כדי שהכפתורי עריכה יופיעו במידת הצורך
+                // Refresh the adapter with the new currentUserId
                 adapter.notifyDataSetChanged()
             }
         }
 
-        // 3. כשהפוסטים מגיעים, מכניסים אותם לאדפטר שתמיד קיים
+        // When posts are loaded, submit them to the adapter
         feedViewModel.posts.observe(viewLifecycleOwner) { posts ->
-            adapter.submitList(posts)
+            originalPosts = posts
+            applyLocalFilter()
         }
 
         binding.btnToggleFilter.setOnClickListener {
