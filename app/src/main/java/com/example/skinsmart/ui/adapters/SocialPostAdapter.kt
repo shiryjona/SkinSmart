@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit
  */
 class SocialPostAdapter(
     private var posts: List<SocialPost>,
-    private val currentUserId: String? = null,
+    var currentUserId: String? = null,
     private val onEditClicked: ((SocialPost) -> Unit)? = null,
     private val onDeleteClicked: ((SocialPost) -> Unit)? = null
 ) : RecyclerView.Adapter<SocialPostAdapter.PostViewHolder>() {
