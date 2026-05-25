@@ -45,6 +45,9 @@ class HomeFragment : Fragment() {
                     intArrayOf(-android.R.attr.state_checked)
                 )
 
+                // If the skin type is already selected, set the chip to checked
+                isChecked = selectedSkinTypes.contains(skinType)
+
                 // Listener to handle chip selection
                 setOnCheckedChangeListener { _, isChecked ->
                     if (isChecked) {
@@ -108,6 +111,16 @@ class HomeFragment : Fragment() {
         authViewModel = ViewModelProvider(requireActivity()).get(AuthViewModel::class.java)
 
         setupSkinTypeChips()
+
+        // Recreate the adapter with the new list
+        val hasActiveFilters = selectedSkinTypes.isNotEmpty()
+        if (hasActiveFilters) {
+            binding.scrollSkinFilters.visibility = View.VISIBLE
+            binding.btnToggleFilter.isSelected = true
+        } else {
+            binding.scrollSkinFilters.visibility = View.GONE
+            binding.btnToggleFilter.isSelected = false
+        }
 
         binding.rvFeed.layoutManager = LinearLayoutManager(requireContext())
         binding.rvFeed.setHasFixedSize(false)
