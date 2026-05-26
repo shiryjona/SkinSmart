@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="primary_purple">#6750A4</color> <!-- Matches Material 3 Primary / Login Button -->
+    <color name="dark_purple">#4A148C</color>    <!-- Deep Purple for Selected state -->
+    <color name="grey_unselected">#8E8E8E</color>
+    <color name="light_purple_bg">#EADDFF</color>  <!-- light Purple for Selected Filter state -->
+    <color name="light_grey_bg">#F3F4F6</color>  <!-- light Grey for Unselected Filter state -->
+</resources>

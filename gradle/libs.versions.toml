@@ -1,5 +1,5 @@
 [versions]
-agp = "9.0.1"
+agp = "8.6.0"
 coreKtx = "1.12.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
@@ -8,12 +8,12 @@ appcompat = "1.6.1"
 material = "1.10.0"
 activity = "1.8.0"
 constraintlayout = "2.1.4"
-kotlin = "1.9.10"
-navVersion = "2.7.5"
+kotlin = "2.0.21"
+navVersion = "2.8.9"
 roomVersion = "2.6.0"
 retrofitVersion = "2.9.0"
 lifecycleVersion = "2.6.2"
-kspVersion = "1.9.10-1.0.13"
+kspVersion = "2.0.21-1.0.28"
 googleServices = "4.4.0"
 
 [libraries]
@@ -42,3 +42,4 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
+navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "navVersion" }

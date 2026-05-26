@@ -1,0 +1,105 @@
+package com.example.skinsmart.ui.adapters
+
+import android.graphics.Typeface
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.example.skinsmart.R
+import com.example.skinsmart.databinding.ItemPostBinding
+import com.example.skinsmart.model.SkinType
+import com.example.skinsmart.model.SocialPost
+import com.squareup.picasso.Picasso
+import java.util.concurrent.TimeUnit
+
+/**
+ * Adapter for displaying social feed posts.
+ *
+ * @param posts         Initial list of posts.
+ * @param currentUserId Firebase UID of the logged-in user. When provided, posts belonging
+ *                      to this user will show Edit and Delete buttons.
+ * @param onEditClicked Callback invoked when the user clicks Edit on their own post.
+ * @param onDeleteClicked Callback invoked when the user clicks Delete on their own post.
+ */
+class SocialPostAdapter(
+    private var posts: List<SocialPost>,
+    var currentUserId: String? = null,
+    private val onEditClicked: ((SocialPost) -> Unit)? = null,
+    private val onDeleteClicked: ((SocialPost) -> Unit)? = null
+) : RecyclerView.Adapter<SocialPostAdapter.PostViewHolder>() {
+
+    fun submitList(newPosts: List<SocialPost>) {
+        posts = newPosts
+        notifyDataSetChanged()
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
+        val binding = ItemPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return PostViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
+        holder.bind(posts[position])
+    }
+
+    override fun getItemCount(): Int = posts.size
+
+    inner class PostViewHolder(private val binding: ItemPostBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(post: SocialPost) {
+            // Load author avatar
+            if (post.authorAvatarUrl.isNotEmpty()) {
+                Picasso.get()
+                    .load(post.authorAvatarUrl)
+                    .placeholder(R.drawable.ic_profile_white)
+                    .error(R.drawable.ic_profile_white)
+                    .fit()
+                    .centerCrop()
+                    .into(binding.ivAuthorAvatar)
+            } else {
+                // In case the author doesn't have an avatar, use a default placeholder
+                binding.ivAuthorAvatar.setImageResource(R.drawable.ic_profile_white)
+            }
+
+            binding.tvAuthorName.text = post.authorName
+            
+            val skinType = SkinType.fromString(post.authorSkinType)
+            binding.tvAuthorSkinType.text = skinType.formattedLabel
+            binding.tvAuthorSkinType.backgroundTintList = skinType.getBackgroundColorStateList()
+            binding.tvAuthorSkinType.setTextColor(skinType.textColorInt)
+
+            binding.tvProductName.text = post.productName
+            binding.tvReviewText.text = "\"${post.reviewText}\""
+            binding.tvReviewText.setTypeface(null, Typeface.ITALIC)
+            binding.rbRating.rating = post.rating.toFloat()
+
+            // Time-ago label
+            val diffMs = System.currentTimeMillis() - post.timestamp
+            val hours = TimeUnit.MILLISECONDS.toHours(diffMs)
+            binding.tvTime.text = when {
+                hours < 1   -> "just now"
+                hours < 24  -> "${hours}h ago"
+                else        -> "${TimeUnit.MILLISECONDS.toDays(diffMs)}d ago"
+            }
+
+            // Load post image if available
+            if (post.imageUrl.isNotEmpty()) {
+                binding.ivPostImage.visibility = View.VISIBLE
+                Picasso.get().load(post.imageUrl).fit().centerCrop().into(binding.ivPostImage)
+            } else {
+                binding.ivPostImage.visibility = View.GONE
+            }
+
+            // Show Edit/Delete only for the current user's own posts
+            val isOwnPost = currentUserId != null && post.userId == currentUserId
+            if (isOwnPost && onEditClicked != null && onDeleteClicked != null) {
+                binding.layoutEditDelete.visibility = View.VISIBLE
+                binding.btnEditPost.setOnClickListener { onEditClicked.invoke(post) }
+                binding.btnDeletePost.setOnClickListener { onDeleteClicked.invoke(post) }
+            } else {
+                binding.layoutEditDelete.visibility = View.GONE
+            }
+        }
+    }
+}

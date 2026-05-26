@@ -1,0 +1,42 @@
+package com.example.skinsmart.data.local
+
+import androidx.lifecycle.LiveData
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
+
+@Dao
+@JvmSuppressWildcards
+interface SkinSmartDao {
+
+    @Query("SELECT * FROM shelf_products WHERE userId = :userId")
+    fun getAllShelfProducts(userId: String): LiveData<List<ShelfProduct>>
+
+    @Query("SELECT * FROM shelf_products WHERE id = :productId AND userId = :userId LIMIT 1")
+    suspend fun getShelfProductById(productId: String, userId: String): ShelfProduct?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertShelfProduct(product: ShelfProduct): Long
+
+    @Update
+    suspend fun updateShelfProduct(product: ShelfProduct): Int
+
+    @Delete
+    suspend fun deleteShelfProduct(product: ShelfProduct): Int
+
+    @Query("SELECT COUNT(*) FROM shelf_products WHERE userId = :userId")
+    fun getShelfCount(userId: String): LiveData<Int>
+
+    // ======== User Profile Cache Operations ========
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertUser(user: LocalUser)
+
+    @Query("SELECT * FROM user_profile WHERE id = :userId LIMIT 1")
+    suspend fun getUserById(userId: String): LocalUser?
+
+    @Query("SELECT * FROM user_profile LIMIT 1")
+    fun getCachedUser(): LiveData<LocalUser?>
+}

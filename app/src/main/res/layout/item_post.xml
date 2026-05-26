@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="@android:color/white">
+
+    <!--
+        ConstraintLayout with wrap_content height.
+        RULE: Every view must form a complete vertical chain (top+bottom constraints)
+        so wrap_content can measure the card height correctly.
+    -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- ── HEADER ── -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivAuthorAvatar"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_margin="12dp"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+            android:src="@drawable/ic_profile_white"
+            android:background="#d1d5db"
+            android:padding="2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvAuthorName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"
+            tools:text="Dana Cohen"
+            android:textSize="14sp"
+            android:textColor="#1f2937"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/ivAuthorAvatar"
+            app:layout_constraintTop_toTopOf="@id/ivAuthorAvatar"
+            app:layout_constraintEnd_toStartOf="@id/tvTime" />
+
+        <TextView
+            android:id="@+id/tvAuthorSkinType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Oily Skin"
+            android:textSize="10sp"
+            android:background="@drawable/bg_skin_tag"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="2dp"
+            android:layout_marginTop="2dp"
+            app:layout_constraintStart_toStartOf="@id/tvAuthorName"
+            app:layout_constraintTop_toBottomOf="@id/tvAuthorName" />
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            tools:text="2h ago"
+            android:textSize="12sp"
+            android:textColor="#9ca3af"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ivAuthorAvatar"
+            app:layout_constraintBottom_toBottomOf="@id/ivAuthorAvatar" />
+
+        <!-- ── OPTIONAL IMAGE ── -->
+        <ImageView
+            android:id="@+id/ivPostImage"
+            android:layout_width="0dp"
+            android:layout_height="224dp"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            android:background="#f3f4f6"
+            android:layout_marginTop="12dp" app:layout_constraintTop_toBottomOf="@id/ivAuthorAvatar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- ── PRODUCT NAME ── -->
+        <TextView
+            android:id="@+id/tvProductName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="12dp"
+            tools:text="CeraVe Foaming Cleanser"
+            android:textSize="14sp"
+            android:textColor="#111827"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivPostImage" />
+
+        <!-- ── RATING ── -->
+        <RatingBar
+            android:id="@+id/rbRating"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            android:numStars="5"
+            android:stepSize="1.0"
+            tools:rating="4.0"
+            android:progressTint="#facc15"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvProductName" />
+
+        <!-- ── REVIEW TEXT ── -->
+        <TextView
+            android:id="@+id/tvReviewText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="6dp"
+            tools:text="Best cleanser for oily skin!"
+            android:textSize="12sp"
+            android:textColor="#4b5563"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rbRating"
+            app:layout_constraintBottom_toTopOf="@id/layoutEditDelete" />
+
+        <!--
+            Edit / Delete row.
+            - GONE by default → collapses to 0 height, tvReviewText anchors to parent bottom via chain.
+            - VISIBLE in Profile (own posts) and in Feed for the current user's own posts.
+        -->
+        <LinearLayout
+            android:id="@+id/layoutEditDelete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="12dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/tvReviewText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <Button
+                android:id="@+id/btnEditPost"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="32dp"
+                android:text="Edit"
+                android:textSize="11sp"
+                android:textColor="#6b7280"
+                app:strokeColor="#e5e7eb"
+                android:backgroundTint="#f9fafb"
+                android:layout_marginEnd="6dp"/>
+
+            <Button
+                android:id="@+id/btnDeletePost"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="32dp"
+                android:text="Delete"
+                android:textSize="11sp"
+                android:textColor="#ef4444"
+                app:strokeColor="#fecaca"
+                android:backgroundTint="#fef2f2"/>
+
+        </LinearLayout>
+
+        <!-- Spacer when layoutEditDelete is GONE — ensures correct bottom padding -->
+        <View
+            android:id="@+id/viewBottomSpacer"
+            android:layout_width="0dp"
+            android:layout_height="12dp"
+            app:layout_constraintTop_toBottomOf="@id/layoutEditDelete"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
