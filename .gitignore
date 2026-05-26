@@ -58,7 +58,7 @@ captures/
 .cxx
 
 # Google Services (DO NOT commit — contains API keys)
-# google-services.json   ← השאירי אותו כן — פרויקט לימודי
+# google-services.json
 
 # Claude Code
 .claude/

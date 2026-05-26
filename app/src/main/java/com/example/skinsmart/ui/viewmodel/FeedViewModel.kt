@@ -29,14 +29,16 @@ class FeedViewModel : ViewModel() {
     private val _postPublished = MutableLiveData<Boolean?>()
     val postPublished: LiveData<Boolean?> = _postPublished
 
-    init {
-        startListeningToFeed()
-    }
+    private var isListening = false
 
     /**
      * Starts real-time updates for the global social feed.
      */
     fun startListeningToFeed() {
+        // If already listening, do nothing
+        if (isListening) return
+        isListening = true
+
         _isLoading.value = true
         feedListener?.remove()
         feedListener = feedRepository.listenToFeed(

@@ -155,6 +155,9 @@ class HomeFragment : Fragment() {
                 adapter.currentUserId = user.id
                 // Refresh the adapter with the new currentUserId
                 adapter.notifyDataSetChanged()
+
+                // Start listening to the feed when the user is logged in
+                feedViewModel.startListeningToFeed()
             }
         }
 
